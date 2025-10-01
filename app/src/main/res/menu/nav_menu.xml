@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/map_item"
+        android:icon="@drawable/achievements"
+        android:title="achievements" />
+    <item
+        android:id="@+id/friends_item"
+        android:icon="@drawable/people"
+        android:title="friends" />
+    <item
+        android:id="@+id/alert_item"
+        android:icon="@drawable/alert_circle"
+        android:title="alert" />
+    <item
+        android:id="@+id/map_item"
+        android:icon="@drawable/map"
+        android:title="map" />
+    <item
+        android:id="@+id/settings_item"
+        android:icon="@drawable/settings"
+        android:title="settings" />
+</menu>

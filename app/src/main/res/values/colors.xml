@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="safe_blue">#384959</color>
+    <color name="safe_button">#104579</color>
 </resources>

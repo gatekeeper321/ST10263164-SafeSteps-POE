@@ -55,6 +55,12 @@
             tools:layout_editor_absoluteX="213dp"
             tools:layout_editor_absoluteY="383dp" />
 
+        <Button
+            android:id="@+id/btnSkip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="skip (dev purposes)" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

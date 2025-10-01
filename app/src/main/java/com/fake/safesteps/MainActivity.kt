@@ -61,5 +61,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,exception.localizedMessage,Toast.LENGTH_LONG).show()
             }
         }
+
+        binding.btnSkip.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
