@@ -70,7 +70,20 @@ class PhotoSharing : AppCompatActivity() {
             .setNegativeButtonText("Cancel")
             .build()
 
-        biometricPrompt.authenticate(promptInfo)
+        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+
+        if (isBiometricEnabled) {
+            biometricPrompt.authenticate(promptInfo)
+        } else {
+            notifyUser("Biometric login disabled")
+        }
+
+        binding.startAuthentication.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
     private fun notifyUser(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

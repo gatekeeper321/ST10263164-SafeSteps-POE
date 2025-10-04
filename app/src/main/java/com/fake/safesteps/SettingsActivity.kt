@@ -51,6 +51,22 @@ class SettingsActivity : AppCompatActivity() {
         binding.logoutButton.setOnClickListener {
             showLogoutDialog()
         }
+
+        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+        binding.biometricSwitch.isChecked = isBiometricEnabled
+
+        binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
+            with(sharedPref.edit()) {
+                putBoolean("biometric_enabled", isChecked)
+                apply()
+            }
+            Toast.makeText(
+                this,
+                if (isChecked) "Biometric enabled" else "Biometric disabled",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun showLanguageDialog() {
