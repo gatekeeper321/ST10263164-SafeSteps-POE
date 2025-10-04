@@ -45,12 +45,20 @@ class PhotoSharing : AppCompatActivity() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    notifyUser("Authentication error: $errString")
-                    goBackToLogin()
+                    //notifyUser("Authentication error: $errString")
+                    notifyUser("Biometric skipped - proceeding anyway")
+                    goToHome()
+                                }
+                private fun goToHome() {
+                    val intent = Intent(this@PhotoSharing, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
+
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     notifyUser("Authentication succeeded")
+                    goToHome()
 
                 }
                 override fun onAuthenticationFailed() {
