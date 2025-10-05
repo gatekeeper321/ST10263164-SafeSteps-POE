@@ -25,6 +25,9 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
+        <activity
+            android:name=".AlertHistoryActivity"
+            android:exported="false" />
 
         <activity android:name=".ContactsActivity"
                   android:exported="false"/>

@@ -5,6 +5,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.fake.safesteps.models.EmergencyAlert
+import com.fake.safesteps.models.TrustedContact
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 
 class AlertRepository {
@@ -21,21 +23,48 @@ class AlertRepository {
             val userId = auth.currentUser?.uid
                 ?: return Result.failure(Exception("User not logged in"))
 
+            // Get user's trusted contacts
+            val contactsResult = getTrustedContacts()
+            val contactIds = contactsResult.getOrNull()?.map { it.contactUserId } ?: emptyList()
+
             val alert = hashMapOf(
                 "userId" to userId,
                 "latitude" to latitude,
                 "longitude" to longitude,
                 "alertType" to alertType,
                 "isActive" to true,
-                "timestamp" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
-                "notifiedContacts" to emptyList<String>()
+                "timestamp" to FieldValue.serverTimestamp(),
+                "notifiedContacts" to contactIds  // THIS MAKES IT COMPLETE
             )
 
             val documentRef = alertsCollection.add(alert).await()
-            Log.d("AlertRepository", "Alert created: ${documentRef.id}")
+            Log.d("AlertRepository", "Alert created for user $userId with contacts: $contactIds")
+
             Result.success(documentRef.id)
         } catch (e: Exception) {
             Log.e("AlertRepository", "Error creating alert", e)
+            Result.failure(e)
+        }
+    }
+
+    // Add this method
+    suspend fun getTrustedContacts(): Result<List<TrustedContact>> {
+        return try {
+            val userId = auth.currentUser?.uid
+                ?: return Result.failure(Exception("User not logged in"))
+
+            val snapshot = db.collection("trustedContacts")
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("isActive", true)
+                .get()
+                .await()
+
+            val contacts = snapshot.documents.mapNotNull {
+                it.toObject(TrustedContact::class.java)
+            }
+
+            Result.success(contacts)
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
