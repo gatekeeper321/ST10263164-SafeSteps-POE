@@ -2,6 +2,7 @@ package com.fake.safesteps
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -33,6 +34,40 @@ class ContactsActivity : AppCompatActivity() {
         setupClickListeners()
 
         viewModel.loadContacts()
+
+        setContentView(binding.root)
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                )
+
+        binding.bottomNavigation.selectedItemId = R.id.friends_item
+        setupBottomNavigation()
+    }
+
+    //bottom nav (copy paste to every activity)
+    private fun setupBottomNavigation() {
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.alert_item -> {
+                    startActivity(Intent(this, AlertActivity::class.java))
+                    true
+                }
+                R.id.settings_item -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                R.id.friends_item -> {
+                    startActivity(Intent(this, ContactsActivity::class.java))
+                    true
+                }
+
+                R.id.alert_history_item -> {
+                    startActivity(Intent(this, AlertHistoryActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -89,12 +124,21 @@ class ContactsActivity : AppCompatActivity() {
                 val email = emailInput.text.toString().trim()
                 val phone = phoneInput.text.toString().trim()
 
-                if (name.isNotEmpty()) {
-                    // For now, use a generated ID. In production, this would be another user's Firebase UID
-                    val contactUserId = "contact_${System.currentTimeMillis()}"
-                    viewModel.addContact(contactUserId, name, email, phone)
-                } else {
-                    Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
+                // ADD VALIDATION HERE
+                when {
+                    name.isEmpty() -> {
+                        Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
+                    }
+                    email.isEmpty() && phone.isEmpty() -> {
+                        Toast.makeText(this, "Please provide either email or phone number", Toast.LENGTH_SHORT).show()
+                    }
+                    email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                        Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        val contactUserId = "contact${System.currentTimeMillis()}"
+                        viewModel.addContact(contactUserId, name, email, phone)
+                    }
                 }
             }
             .setNegativeButton("Cancel", null)

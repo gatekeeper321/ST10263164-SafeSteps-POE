@@ -23,11 +23,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setContentView(binding.root)
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                )
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            insets
+        }
+
         auth = FirebaseAuth.getInstance()
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val intent = Intent(this, PhotoSharing::class.java)
+            val intent = Intent(this, AlertActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -39,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 if(task.isSuccessful){
                     val currentUser = auth.currentUser!!.email.toString()
                     Toast.makeText(this,"Welcome : ${currentUser}", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, PhotoSharing::class.java)
+                    val intent = Intent(this, AlertActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -49,21 +60,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnRegister.setOnClickListener {
-            val email = binding.emailText.text.toString()
-            val password = binding.passwordText.text.toString()
-            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    val intent = Intent(this, PhotoSharing::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }.addOnFailureListener { exception ->
-                Toast.makeText(this,exception.localizedMessage,Toast.LENGTH_LONG).show()
-            }
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         binding.btnSkip.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, AlertActivity::class.java)
             startActivity(intent)
             finish()
         }

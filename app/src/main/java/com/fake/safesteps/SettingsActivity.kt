@@ -3,6 +3,7 @@ package com.fake.safesteps
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,40 @@ class SettingsActivity : AppCompatActivity() {
         loadUserInfo()
         loadLanguagePreference()
         setupClickListeners()
+
+        setContentView(binding.root)
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                )
+
+        binding.bottomNavigation.selectedItemId = R.id.settings_item
+        setupBottomNavigation()
+    }
+
+    //bottom nav (copy paste to every activity)
+    private fun setupBottomNavigation() {
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.alert_item -> {
+                    startActivity(Intent(this, AlertActivity::class.java))
+                    true
+                }
+                R.id.settings_item -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                R.id.friends_item -> {
+                    startActivity(Intent(this, ContactsActivity::class.java))
+                    true
+                }
+
+                R.id.alert_history_item -> {
+                    startActivity(Intent(this, AlertHistoryActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun loadUserInfo() {
