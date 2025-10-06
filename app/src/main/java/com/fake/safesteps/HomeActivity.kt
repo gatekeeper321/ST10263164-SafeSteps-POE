@@ -53,8 +53,6 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
 
-
-
                 else -> false
             }
         }

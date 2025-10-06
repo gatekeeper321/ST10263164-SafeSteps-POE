@@ -14,6 +14,10 @@
         android:icon="@drawable/people"
         android:title="friends" />
     <item
+        android:id="@+id/alert_history_item"
+        android:icon="@drawable/ic_history"
+        android:title="history" />
+    <item
         android:id="@+id/alert_item"
         android:icon="@drawable/alert_circle"
         android:title="alert" />
@@ -25,9 +29,5 @@
         android:id="@+id/settings_item"
         android:icon="@drawable/settings"
         android:title="settings" />
-    <item
-        android:id="@+id/alert_history_item"
-        android:icon="@drawable/ic_history"
-        android:title="history" />
 
 </menu>

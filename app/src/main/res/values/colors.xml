@@ -48,8 +48,15 @@
     <color name="border_subtle">#E5E7EB</color>
     <color name="border_medium">#D1D5DB</color>
     <color name="border_strong">#9CA3AF</color>
+
     <!-- Add these to your existing colors.xml -->
-    <color name="safe_blue">#2563EB</color>
-    <color name="safe_button">#10B981</color>
+    <color name="safe_blue">#384959</color>
+    <color name="safe_nav">#104579</color>
+    <color name="safe_button">#88BDF2</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+
+
+
 </resources>

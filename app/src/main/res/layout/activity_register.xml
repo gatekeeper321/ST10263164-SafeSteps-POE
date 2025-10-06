@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/safe_blue"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -60,30 +60,30 @@
             android:layout_height="50dp" />
 
         <Button
-            android:id="@+id/btnSignIn"
+            android:id="@+id/btnRegister"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/safe_button"
-            android:onClick="SignIn"
-            android:text="Sign in"
+            android:onClick="Register"
+            android:text="Register"
             android:textColor="@color/black"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="382dp" />
+            tools:layout_editor_absoluteX="213dp"
+            tools:layout_editor_absoluteY="383dp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnSignIn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/safe_button"
-            android:onClick="Register"
-            android:text="Don't have an account? Register"
+            android:onClick="SignIn"
+            android:text="Have an Account? Sign in"
             android:textColor="@color/black"
-            tools:layout_editor_absoluteX="213dp"
-            tools:layout_editor_absoluteY="383dp" />
+            tools:layout_editor_absoluteX="91dp"
+            tools:layout_editor_absoluteY="382dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -98,5 +98,4 @@
             android:textColor="@color/black" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
