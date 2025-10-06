@@ -56,4 +56,14 @@ class AlertViewModel(application: Application) : AndroidViewModel(application) {
                 .onFailure { _error.value = it.message }
         }
     }
+    private val _userAlerts = MutableLiveData<List<EmergencyAlert>>()
+    val userAlerts: LiveData<List<EmergencyAlert>> = _userAlerts
+
+    fun loadAllAlerts() {
+        viewModelScope.launch {
+            repository.getUserAlerts()
+                .onSuccess { _userAlerts.value = it }
+                .onFailure { _error.value = it.message }
+        }
+    }
 }

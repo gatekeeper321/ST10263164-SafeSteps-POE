@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Remove this to keep item count ≤ 5 -->
+    <!--
     <item
         android:id="@+id/achievements_item"
         android:icon="@drawable/achievements"
         android:title="achievements" />
+    -->
+
     <item
         android:id="@+id/friends_item"
         android:icon="@drawable/people"
@@ -21,4 +25,9 @@
         android:id="@+id/settings_item"
         android:icon="@drawable/settings"
         android:title="settings" />
+    <item
+        android:id="@+id/alert_history_item"
+        android:icon="@drawable/ic_history"
+        android:title="history" />
+
 </menu>

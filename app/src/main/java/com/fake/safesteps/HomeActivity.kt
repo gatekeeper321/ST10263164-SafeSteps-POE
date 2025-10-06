@@ -43,14 +43,18 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
                 }
-                R.id.achievements_item -> {
-                    notifyUser("Achievements coming soon")
-                    true
-                }
+
                 R.id.map_item -> {
                     notifyUser("Map coming soon")
                     true
                 }
+                R.id.alert_history_item -> {
+                    startActivity(Intent(this, AlertHistoryActivity::class.java))
+                    true
+                }
+
+
+
                 else -> false
             }
         }

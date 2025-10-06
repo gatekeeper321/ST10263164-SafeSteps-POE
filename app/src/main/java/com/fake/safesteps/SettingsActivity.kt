@@ -40,8 +40,8 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.profileContainer.setOnClickListener {
-            // TODO: Navigate to profile edit screen
-            Toast.makeText(this, "Profile editing coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         binding.languageContainer.setOnClickListener {
