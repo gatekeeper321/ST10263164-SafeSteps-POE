@@ -52,7 +52,7 @@ SafeSteps is an Android safety application that enables users to send emergency 
 ### Installation
 1. Clone repository
 ```bash
-git clone https://github.com/yourusername/SafeSteps.git
+git clone https://github.com/ST10079108/SafeSteps.git
 Open in Android Studio
 Add google-services.json to app/ directory
 Sync Gradle
