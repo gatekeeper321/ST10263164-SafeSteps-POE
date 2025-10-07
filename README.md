@@ -8,7 +8,6 @@ Built with **Firebase** and **Google Location Services APIs**.
 
 ## 🎥 Demo Video
 [👉 Watch Full Demonstration]
-[(link-to-your-youtube-video)]
 (https://youtu.be/pKlkC3_Dqg4)
 
 ---
