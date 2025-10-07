@@ -1,7 +1,7 @@
 
 # SafeSteps - Personal Safety Application
 
-![SafeSteps Logo](link-to-your-logo-image)
+
 
 ## Overview
 SafeSteps is an Android safety application that enables users to send emergency alerts to trusted contacts with a single tap. Built with Firebase and Google Location Services APIs.
@@ -103,9 +103,6 @@ Team Members
 [Nomvuselelo] - ST10264503 (Features: UI Design)
 [Michel] - ST10391174 (Features: Navigation, Testing)
 
-AI Usage Statement
-[Add your 500-word AI usage statement here if applicable]
-Screenshots
 
 Part 3 Implementations
 Firebase Cloud Messaging for push notifications
