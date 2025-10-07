@@ -77,6 +77,11 @@ class AlertActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.map_item -> {
+                    notifyUser("Map coming soon")
+                    true
+                }
+
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -113,6 +118,10 @@ class AlertActivity : AppCompatActivity() {
         binding.emergencyButton.setOnClickListener {
             checkLocationPermissionAndSendAlert()
         }
+    }
+
+    private fun notifyUser(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun checkLocationPermissionAndSendAlert() {

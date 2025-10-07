@@ -5,6 +5,7 @@ package com.fake.safesteps
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +56,11 @@ class AlertHistoryActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.map_item -> {
+                    notifyUser("Map coming soon")
+                    true
+                }
+
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -70,6 +76,10 @@ class AlertHistoryActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@AlertHistoryActivity)
             adapter = this@AlertHistoryActivity.adapter
         }
+    }
+
+    private fun notifyUser(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupObservers() {

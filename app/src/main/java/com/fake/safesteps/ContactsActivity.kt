@@ -61,6 +61,11 @@ class ContactsActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.map_item -> {
+                    notifyUser("Map coming soon")
+                    true
+                }
+
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -79,6 +84,10 @@ class ContactsActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@ContactsActivity)
             adapter = this@ContactsActivity.adapter
         }
+    }
+
+    private fun notifyUser(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupObservers() {

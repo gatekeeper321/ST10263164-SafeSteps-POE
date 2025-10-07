@@ -51,6 +51,11 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.map_item -> {
+                    notifyUser("Map coming soon")
+                    true
+                }
+
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -73,6 +78,10 @@ class SettingsActivity : AppCompatActivity() {
         binding.selectedLanguageText.text = language
     }
 
+    private fun notifyUser(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun setupClickListeners() {
         binding.profileContainer.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -89,6 +98,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+
         binding.biometricSwitch.isChecked = isBiometricEnabled
 
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
