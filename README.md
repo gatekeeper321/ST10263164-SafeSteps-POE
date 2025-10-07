@@ -141,6 +141,8 @@ Android Developers Guide
 
 Material Design Guidelines
 
+```
+
 ## References
 
 ### For icons in navigation bar:
@@ -157,7 +159,7 @@ Turtle Code. (2022) Firebase Authentication - Kotlin Android Tutorial. [YouTube 
 Lackner P. (2024) How to Implement Biometric Auth in Your Android App. [YouTube video] Available at: https://www.youtube.com/watch?v=_dCRQ9wta-I
  (Accessed: 7 October 2025).
 
-###  AI assistance:
+### AI assistance:
 
 OpenAI. (2025) ChatGPT (GPT‑5) [Large language model]. [online] Available at: https://chat.openai.com/
  (Accessed: 7 October 2025).
