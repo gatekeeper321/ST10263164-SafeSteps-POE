@@ -98,10 +98,10 @@ See .github/workflows/build.yml
 
 Team Members
 
-[Your Name] - ST10263164 (Features: Alert system, Contacts, Settings)
-[Teammate 1] - ST10079108 (Features: Authentication, Biometrics)
-[Teammate 2] - ST10264503 (Features: UI Design)
-[Teammate 3] - ST10391174 (Features: Navigation, Testing)
+[Ilyaas] - ST10263164 (Features: Alert system, Contacts, Settings)
+[William] - ST10079108 (Features: Authentication, Biometrics)
+[Nomvuselelo] - ST10264503 (Features: UI Design)
+[Michel] - ST10391174 (Features: Navigation, Testing)
 
 AI Usage Statement
 [Add your 500-word AI usage statement here if applicable]
@@ -123,6 +123,4 @@ Android Developers Guide
 Material Design Guidelines
 
 
-1. Clone repository
-```bash
-git clone https://github.com/yourusername/SafeSteps.git
+
