@@ -107,7 +107,7 @@ AI Usage Statement
 [Add your 500-word AI usage statement here if applicable]
 Screenshots
 
-
+Part 3 Implementations
 Firebase Cloud Messaging for push notifications
 Geofencing with entry/exit alerts
 Google Maps integration
