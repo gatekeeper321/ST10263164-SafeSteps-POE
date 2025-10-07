@@ -110,12 +110,13 @@ GitHub Actions automated testing
 
 See .github/workflows/build.yml for CI configuration
 
-👥 Team Members
-Name	Student Number	Features
-Ilyaas	ST10263164	Alert system, Contacts, Settings
-William	ST10079108	Authentication, Biometrics
-Nomvuselelo	ST10264503	UI Design
-Michel	ST10391174	Navigation, Testing
+| Name            | Student Number | Features                         |
+| --------------- | -------------- | -------------------------------- |
+| **Ilyaas**      | ST10263164     | Alert system, Contacts, Settings |
+| **William**     | ST10079108     | Authentication, Biometrics       |
+| **Nomvuselelo** | ST10264503     | UI Design                        |
+| **Michel**      | ST10391174     | Navigation, Testing              |
+
 🧭 Part 3 Implementations (Planned)
 
 Firebase Cloud Messaging for push notifications
