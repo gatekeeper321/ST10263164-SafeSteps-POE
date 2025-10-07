@@ -86,20 +86,22 @@ app/
 | notifiedContacts | Array<String> |
 | isActive         | Boolean       |
 
-trustedContacts
-Field	Type
-userId	String
-contactUserId	String
-contactName	String
-contactEmail	String
-contactPhone	String
-isActive	Boolean
-users
-Field	Type
-firebaseUid	String
-email	String
-displayName	String
-phoneNumber	String
+| Field         | Type    |
+| ------------- | ------- |
+| userId        | String  |
+| contactUserId | String  |
+| contactName   | String  |
+| contactEmail  | String  |
+| contactPhone  | String  |
+| isActive      | Boolean |
+
+| Field       | Type   |
+| ----------- | ------ |
+| firebaseUid | String |
+| email       | String |
+| displayName | String |
+| phoneNumber | String |
+
 🧪 Testing
 
 Unit tests in app/src/test
