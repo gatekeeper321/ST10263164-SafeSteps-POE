@@ -7,7 +7,7 @@ SafeSteps is an Android safety application that enables users to send emergency 
 Built with **Firebase** and **Google Location Services APIs**.
 
 ## 🎥 Demo Video
-[👉 Watch Full Demonstration](link-to-your-youtube-video)
+[👉 Watch Full Demonstration][(link-to-your-youtube-video)](https://youtu.be/pKlkC3_Dqg4)
 
 ---
 
