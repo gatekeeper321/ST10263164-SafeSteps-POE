@@ -69,6 +69,10 @@ class PhotoSharing : AppCompatActivity() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
                         notifyUser("Authentication succeeded")
+
+                        val intent = Intent(this@PhotoSharing, AlertActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
 
                     override fun onAuthenticationFailed() {

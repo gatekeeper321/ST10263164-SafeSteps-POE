@@ -51,6 +51,11 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.map_item -> {
+                    notifyUser("Map coming soon")
+                    true
+                }
+
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -71,6 +76,10 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val language = sharedPref.getString("selected_language", "English")
         binding.selectedLanguageText.text = language
+    }
+
+    private fun notifyUser(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupClickListeners() {

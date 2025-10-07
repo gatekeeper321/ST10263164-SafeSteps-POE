@@ -40,7 +40,7 @@
             android:layout_height="100dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnStopAlert"
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:backgroundTint="@color/safe_button"
