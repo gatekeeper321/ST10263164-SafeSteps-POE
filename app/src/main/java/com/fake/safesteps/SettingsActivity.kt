@@ -89,6 +89,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+
         binding.biometricSwitch.isChecked = isBiometricEnabled
 
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
