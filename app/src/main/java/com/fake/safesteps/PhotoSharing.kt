@@ -80,7 +80,7 @@ class PhotoSharing : AppCompatActivity() {
         }
 
         binding.startAuthentication.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, AlertActivity::class.java)
             startActivity(intent)
             finish()
         }

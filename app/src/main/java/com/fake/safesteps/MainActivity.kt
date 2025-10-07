@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 if(task.isSuccessful){
                     val currentUser = auth.currentUser!!.email.toString()
                     Toast.makeText(this,"Welcome : ${currentUser}", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, AlertActivity::class.java)
+                    val intent = Intent(this, PhotoSharing::class.java)
                     startActivity(intent)
                     finish()
                 }
