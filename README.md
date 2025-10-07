@@ -1,4 +1,3 @@
-# SafeSteps - Personal Safety Application
 
 # SafeSteps - Personal Safety Application
 
