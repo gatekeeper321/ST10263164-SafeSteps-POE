@@ -141,3 +141,24 @@ Android Developers Guide
 
 Material Design Guidelines
 
+## References
+
+### For icons in navigation bar:
+
+Ionicons. (2025) Open source Icons. [online] Available at: https://ionic.io/ionicons
+ (Accessed: 5 October 2025).
+
+### For research:
+
+GeeksforGeeks. (2025) How to Add Fingerprint Authentication in Your Android App without Using any Library? [online] Available at: https://www.geeksforgeeks.org/android/how-to-add-fingerprint-authentication-in-your-android-app-without-using-any-library/ (Accessed: 7 October 2025).
+
+Turtle Code. (2022) Firebase Authentication - Kotlin Android Tutorial. [YouTube video] Available at: https://www.youtube.com/watch?v=KdKUfnkL2bE (Accessed: 7 October 2025).
+
+Lackner P. (2024) How to Implement Biometric Auth in Your Android App. [YouTube video] Available at: https://www.youtube.com/watch?v=_dCRQ9wta-I
+ (Accessed: 7 October 2025).
+
+###  AI assistance:
+
+OpenAI. (2025) ChatGPT (GPT‑5) [Large language model]. [online] Available at: https://chat.openai.com/
+ (Accessed: 7 October 2025).
+
