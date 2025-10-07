@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import android.app.KeyguardManager
 import android.content.pm.PackageManager
+import android.util.Log
 
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricManager
@@ -80,9 +81,19 @@ class PhotoSharing : AppCompatActivity() {
         }
 
         binding.startAuthentication.setOnClickListener {
-            val intent = Intent(this, AlertActivity::class.java)
-            startActivity(intent)
-            finish()
+            val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+            val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+
+            if (isBiometricEnabled) {
+                Log.d("Biometric", "Starting authentication")
+                biometricPrompt.authenticate(promptInfo)
+            } else {
+                notifyUser("Biometric login disabled")
+                // Proceed normally
+                val intent = Intent(this, AlertActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
     private fun notifyUser(message: String) {
