@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.fake.safesteps.databinding.ActivitySettingsBinding
+import com.fake.safesteps.notifications.FCMTokenHelper
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
@@ -25,16 +26,12 @@ class SettingsActivity : AppCompatActivity() {
         loadLanguagePreference()
         setupClickListeners()
 
-        setContentView(binding.root)
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                )
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         binding.bottomNavigation.selectedItemId = R.id.settings_item
         setupBottomNavigation()
     }
 
-    //bottom nav (copy paste to every activity)
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -50,12 +47,10 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
                 }
-
                 R.id.map_item -> {
                     notifyUser("Map coming soon")
                     true
                 }
-
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -92,13 +87,9 @@ class SettingsActivity : AppCompatActivity() {
             showLanguageDialog()
         }
 
-        binding.logoutButton.setOnClickListener {
-            showLogoutDialog()
-        }
-
+        // Biometric toggle
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
-
         binding.biometricSwitch.isChecked = isBiometricEnabled
 
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -112,6 +103,40 @@ class SettingsActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        // Add FCM Token button listener
+        binding.fcmTokenContainer?.setOnClickListener {
+            showFCMTokenOptions()
+        }
+
+        binding.logoutButton.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    /**
+     * Show FCM Token options dialog
+     */
+    private fun showFCMTokenOptions() {
+        val options = arrayOf(
+            "Get & Copy FCM Token",
+            "Show Saved Token",
+            "Subscribe to 'test' Topic",
+            "Unsubscribe from 'test' Topic"
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle("FCM Token Options")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> FCMTokenHelper.getAndCopyToken(this)
+                    1 -> FCMTokenHelper.showSavedToken(this)
+                    2 -> FCMTokenHelper.subscribeToTopic("test", this)
+                    3 -> FCMTokenHelper.unsubscribeFromTopic("test", this)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showLanguageDialog() {
@@ -150,15 +175,16 @@ class SettingsActivity : AppCompatActivity() {
             .setPositiveButton("Logout") { _, _ ->
                 auth.signOut()
 
-                // Clear preferences
                 getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
                     .edit()
                     .clear()
                     .apply()
 
-                // Navigate to login screen
-                // TODO: Replace with your actual LoginActivity
                 Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
             .setNegativeButton("Cancel", null)

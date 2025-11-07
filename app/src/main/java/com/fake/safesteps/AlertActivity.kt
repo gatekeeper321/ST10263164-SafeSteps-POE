@@ -201,4 +201,32 @@ class AlertActivity : AppCompatActivity() {
             }
         }
     }
+    override fun onResume() {
+        super.onResume()
+
+        // Check network status
+        viewModel.checkNetworkStatus()
+
+        // Observe offline mode
+        viewModel.offlineMode.observe(this) { isOffline ->
+            if (isOffline) {
+                Toast.makeText(
+                    this,
+                    "You are offline. Data will sync when online.",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                // Try to sync offline data
+                viewModel.syncOfflineData()
+            }
+        }
+
+        // Observe sync status
+        viewModel.syncStatus.observe(this) { status ->
+            if (status.isNotEmpty()) {
+                Toast.makeText(this, status, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
+
