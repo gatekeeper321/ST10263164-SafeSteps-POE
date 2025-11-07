@@ -12,18 +12,31 @@ class ContactRepository {
     private val contactsCollection = db.collection("trustedContacts")
 
     suspend fun addContact(
-        contactUserId: String,
+        contactEmail: String,      // identify contact by email
         contactName: String,
-        contactEmail: String,
         contactPhone: String
     ): Result<String> {
         return try {
             val userId = auth.currentUser?.uid
                 ?: return Result.failure(Exception("User not logged in"))
 
+            // Step 1: Find Firebase UID of the contact
+            val userSnapshot = db.collection("users")
+                .whereEqualTo("email", contactEmail)
+                .get()
+                .await()
+
+            if (userSnapshot.isEmpty) {
+                return Result.failure(Exception("No user found with that email"))
+            }
+
+            val contactUid = userSnapshot.documents[0].getString("uid")
+                ?: return Result.failure(Exception("Contact UID not found"))
+
+            // Step 2: Add contact with correct Firebase UID
             val contact = hashMapOf(
                 "userId" to userId,
-                "contactUserId" to contactUserId,
+                "contactUserId" to contactUid,   // now correct UID
                 "contactName" to contactName,
                 "contactEmail" to contactEmail,
                 "contactPhone" to contactPhone,
@@ -33,11 +46,13 @@ class ContactRepository {
 
             val documentRef = contactsCollection.add(contact).await()
             Result.success(documentRef.id)
+
         } catch (e: Exception) {
             Log.e("ContactRepository", "Error adding contact", e)
             Result.failure(e)
         }
     }
+
 
     suspend fun getTrustedContacts(): Result<List<TrustedContact>> {
         return try {
