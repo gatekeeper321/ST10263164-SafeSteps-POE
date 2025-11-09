@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        applySavedLocale()
         setContentView(binding.root)
+
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
@@ -116,4 +118,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private fun applySavedLocale() {
+        val sharedPref = getSharedPreferences("SafeStepsPrefs", MODE_PRIVATE)
+        val selectedLanguage = sharedPref.getString("selected_language", "English")
+
+        val localeCode = when (selectedLanguage) {
+            "Afrikaans" -> "af"
+            "isiZulu" -> "zu"
+            else -> "en"
+        }
+
+        val config = resources.configuration
+        val localeObj = java.util.Locale(localeCode)
+        java.util.Locale.setDefault(localeObj)
+        config.setLocale(localeObj)
+        config.setLayoutDirection(localeObj)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
 }

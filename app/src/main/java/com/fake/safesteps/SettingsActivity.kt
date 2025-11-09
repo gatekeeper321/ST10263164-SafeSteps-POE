@@ -14,6 +14,18 @@ import com.fake.safesteps.notifications.FCMTokenHelper
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var auth: FirebaseAuth
+    override fun attachBaseContext(newBase: Context) {
+        val prefs = newBase.getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+        val langCode = prefs.getString("language_code", "en") ?: "en"
+
+        val locale = java.util.Locale(langCode)
+        val config = newBase.resources.configuration
+        config.setLocale(locale)
+        config.setLayoutDirection(locale)
+        val context = newBase.createConfigurationContext(config)
+
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,13 +168,9 @@ class SettingsActivity : AppCompatActivity() {
                 }
 
                 binding.selectedLanguageText.text = selectedLanguage
-                Toast.makeText(
-                    this,
-                    "Language set to $selectedLanguage",
-                    Toast.LENGTH_SHORT
-                ).show()
-
+                setLocale(selectedLanguage)
                 dialog.dismiss()
+
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -190,4 +198,25 @@ class SettingsActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .show()
     }
+    private fun setLocale(languageName: String) {
+        val localeCode = when (languageName) {
+            "Afrikaans" -> "af"
+            "isiZulu" -> "zu"
+            else -> "en"
+        }
+
+        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("language_code", localeCode)
+            putString("selected_language", languageName)
+            apply()
+        }
+
+        // Restart app to apply locale cleanly
+        val intent = Intent(this, SettingsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+    }
+
 }
