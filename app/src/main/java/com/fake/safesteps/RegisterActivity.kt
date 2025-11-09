@@ -30,8 +30,7 @@ class RegisterActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.btnSignIn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
@@ -52,14 +51,31 @@ class RegisterActivity : AppCompatActivity() {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(
-                            this,
-                            "Registration successful! Welcome!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this, "Registration successful! Welcome!", Toast.LENGTH_SHORT).show()
 
-                        // Save FCM token after successful registration
-                        saveFCMTokenAndProceed()
+                        val user = auth.currentUser
+                        user?.let {
+                            val uid = it.uid
+                            val userData = hashMapOf(
+                                "userId" to uid,
+                                "email" to it.email,
+                                "name" to (it.displayName ?: "Unknown")
+                            )
+
+                            // Save user info to Firestore
+                            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                            db.collection("users").document(uid)
+                                .set(userData)
+                                .addOnSuccessListener {
+                                    Log.d("RegisterActivity", "User info saved to Firestore")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("RegisterActivity", "Failed to save user info", e)
+                                }
+
+                            // Also save FCM token
+                            saveFCMTokenAndProceed()
+                        }
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -68,42 +84,30 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnSkip.setOnClickListener {
-            val intent = Intent(this, AlertActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, AlertActivity::class.java))
             finish()
         }
     }
 
-    /**
-     * Get FCM token and save it to Firestore
-     * This allows the new user to receive notifications from their contacts
-     */
+    /** Get FCM token and save it to Firestore */
     private fun saveFCMTokenAndProceed() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val fcmToken = task.result
                 Log.d("RegisterActivity", "FCM Token: $fcmToken")
 
-                // Save token to Firestore
                 lifecycleScope.launch {
                     fcmTokenRepo.saveUserFCMToken(fcmToken)
-                        .onSuccess {
-                            Log.d("RegisterActivity", "FCM token saved to Firestore")
-                        }
-                        .onFailure { e ->
-                            Log.e("RegisterActivity", "Failed to save FCM token", e)
-                        }
+                        .onSuccess { Log.d("RegisterActivity", "FCM token saved to Firestore") }
+                        .onFailure { e -> Log.e("RegisterActivity", "Failed to save FCM token", e) }
                 }
 
                 // Proceed to login
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 Log.e("RegisterActivity", "Failed to get FCM token", task.exception)
-                // Still proceed even if token fails
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
