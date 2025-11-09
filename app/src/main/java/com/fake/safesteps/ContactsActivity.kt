@@ -145,8 +145,8 @@ class ContactsActivity : AppCompatActivity() {
                         Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        val contactUserId = "contact${System.currentTimeMillis()}"
-                        viewModel.addContact(contactUserId, name, email, phone)
+                        viewModel.addContactByEmail(name, email, phone)
+
                     }
                 }
             }
