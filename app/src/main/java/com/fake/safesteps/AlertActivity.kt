@@ -16,7 +16,7 @@ import com.fake.safesteps.databinding.ActivityAlertBinding
 import com.fake.safesteps.viewmodels.AlertViewModel
 import com.google.android.gms.location.*
 
-class AlertActivity : AppCompatActivity() {
+class AlertActivity : BaseActivity() {
     private lateinit var binding: ActivityAlertBinding
     private lateinit var viewModel: AlertViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -78,7 +78,7 @@ class AlertActivity : AppCompatActivity() {
                 }
 
                 R.id.map_item -> {
-                    notifyUser("Map coming soon")
+                    startActivity(Intent(this, MapActivity::class.java))
                     true
                 }
 
@@ -157,48 +157,101 @@ class AlertActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    // Use last known location
-                    viewModel.createEmergencyAlert(location.latitude, location.longitude)
-                } else {
-                    // Request a fresh location fix if last known is null
-                    val locationRequest = LocationRequest.Builder(
-                        Priority.PRIORITY_HIGH_ACCURACY, 1000
-                    ).setMaxUpdates(1).build()
+            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-                    fusedLocationClient.requestLocationUpdates(
-                        locationRequest,
-                        object : LocationCallback() {
-                            override fun onLocationResult(result: LocationResult) {
-                                val freshLocation = result.lastLocation
-                                if (freshLocation != null) {
+        // Show loading
+        binding.statusText.text = "Getting your location..."
+
+        // Always request a fresh location for emergency alerts
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            5000 // 5 second interval for better accuracy
+        )
+            .setMaxUpdates(1) // Only need one update
+            .setMinUpdateIntervalMillis(1000)
+            .build()
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(result: LocationResult) {
+                    val location = result.lastLocation
+                    if (location != null) {
+                        // LOG THE RECEIVED COORDINATES
+                        android.util.Log.d("AlertActivity",
+                            "Fresh location received: lat=${location.latitude}, lng=${location.longitude}")
+
+                        binding.statusText.text = "Sending alert from your location..."
+                        viewModel.createEmergencyAlert(
+                            location.latitude,
+                            location.longitude
+                        )
+                    } else {
+                        android.util.Log.w("AlertActivity", "Fresh location is null, trying last known")
+
+                        // Fallback to last known location if fresh location fails
+                        try {
+                            fusedLocationClient.lastLocation.addOnSuccessListener { lastKnown ->
+                                if (lastKnown != null) {
+                                    android.util.Log.d("AlertActivity",
+                                        "Last known location: lat=${lastKnown.latitude}, lng=${lastKnown.longitude}")
+
+                                    binding.statusText.text = "Sending alert (using last known location)..."
                                     viewModel.createEmergencyAlert(
-                                        freshLocation.latitude,
-                                        freshLocation.longitude
+                                        lastKnown.latitude,
+                                        lastKnown.longitude
                                     )
                                 } else {
+                                    android.util.Log.e("AlertActivity", "Both fresh and last known location are null")
+                                    binding.statusText.text = "Unable to get location"
                                     Toast.makeText(
                                         this@AlertActivity,
-                                        "Still unable to get location. Try again outdoors with GPS on.",
+                                        "Unable to get location. Please ensure GPS is enabled and try again.",
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
-                                fusedLocationClient.removeLocationUpdates(this)
                             }
-                        },
-                        mainLooper
-                    )
+                        } catch (e: SecurityException) {
+                            android.util.Log.e("AlertActivity", "Security exception getting location", e)
+                        }
+                    }
+                    // Clean up location updates
+                    fusedLocationClient.removeLocationUpdates(this)
                 }
-            }.addOnFailureListener { exception ->
+            },
+            mainLooper
+        )
+    }
+    override fun onResume() {
+        super.onResume()
+
+        // Check network status
+        viewModel.checkNetworkStatus()
+
+        // Observe offline mode
+        viewModel.offlineMode.observe(this) { isOffline ->
+            if (isOffline) {
                 Toast.makeText(
                     this,
-                    "Error getting location: ${exception.message}",
+                    "You are offline. Data will sync when online.",
                     Toast.LENGTH_LONG
                 ).show()
+            } else {
+                // Try to sync offline data
+                viewModel.syncOfflineData()
+            }
+        }
+
+        // Observe sync status
+        viewModel.syncStatus.observe(this) { status ->
+            if (status.isNotEmpty()) {
+                Toast.makeText(this, status, Toast.LENGTH_SHORT).show()
             }
         }
     }
 }
+

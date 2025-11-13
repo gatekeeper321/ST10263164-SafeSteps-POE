@@ -17,7 +17,7 @@ import com.fake.safesteps.databinding.ActivityContactsBinding
 import com.fake.safesteps.models.TrustedContact
 import com.fake.safesteps.viewmodels.ContactViewModel
 
-class ContactsActivity : AppCompatActivity() {
+class ContactsActivity :BaseActivity() {
     private lateinit var binding: ActivityContactsBinding
     private lateinit var viewModel: ContactViewModel
     private lateinit var adapter: ContactsAdapter
@@ -145,8 +145,8 @@ class ContactsActivity : AppCompatActivity() {
                         Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        val contactUserId = "contact${System.currentTimeMillis()}"
-                        viewModel.addContact(contactUserId, name, email, phone)
+                        viewModel.addContactByEmail(name, email, phone)
+
                     }
                 }
             }

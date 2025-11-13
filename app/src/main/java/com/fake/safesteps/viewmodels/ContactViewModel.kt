@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.fake.safesteps.models.TrustedContact
 import com.fake.safesteps.repository.ContactRepository
+import com.fake.safesteps.repository.UserSearchRepository
 import kotlinx.coroutines.launch
 
 class ContactViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = ContactRepository()
+    private val userSearch = UserSearchRepository() // new repository for email lookup
 
     private val _contacts = MutableLiveData<List<TrustedContact>>()
     val contacts: LiveData<List<TrustedContact>> = _contacts
@@ -21,6 +23,9 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _userFound = MutableLiveData<String?>()
+    val userFound: LiveData<String?> = _userFound
+
     fun loadContacts() {
         viewModelScope.launch {
             repository.getTrustedContacts()
@@ -29,6 +34,36 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    /**
+     * New method: Search by email first, then add if found
+     */
+    fun addContactByEmail(
+        contactName: String,
+        contactEmail: String,
+        contactPhone: String
+    ) {
+        viewModelScope.launch {
+            userSearch.findUserByEmail(contactEmail)
+                .onSuccess { firebaseUid ->
+                    if (firebaseUid != null) {
+                        // User found - call existing addContact
+                        addContact(firebaseUid, contactName, contactEmail, contactPhone)
+                    } else {
+                        // User not registered
+                        _error.value = "User with email $contactEmail not registered in SafeSteps"
+                        _contactAdded.value = false
+                    }
+                }
+                .onFailure {
+                    _error.value = "Error searching for user: ${it.message}"
+                    _contactAdded.value = false
+                }
+        }
+    }
+
+    /**
+     * Existing method: Actually adds the contact to Firestore
+     */
     fun addContact(
         contactUserId: String,
         contactName: String,

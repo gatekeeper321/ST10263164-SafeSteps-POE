@@ -10,78 +10,27 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:cardBackgroundColor="@color/safe_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:text="@string/contact_email"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_margin="0dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Edit Profile Information"
-            android:textColor="@color/background_primary"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+    <EditText
+        android:id="@+id/nameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/full_name"/>
 
-    </androidx.cardview.widget.CardView>
-
+    <EditText
+        android:id="@+id/phoneInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_number"
+        android:inputType="phone"/>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/emailText"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:text="Email"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/nameInput"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:backgroundTint="@color/white"
-            android:hint="Full Name"
-            android:textColor="@color/white"
-            android:textColorHint="@color/background_primary" />
-
-        <EditText
-            android:id="@+id/phoneInput"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:backgroundTint="@color/white"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:textColor="@color/white"
-            android:textColorHint="@color/background_primary" />
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/safe_button"
-            android:text="Save"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

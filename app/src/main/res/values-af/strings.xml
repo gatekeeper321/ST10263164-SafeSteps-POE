@@ -1,0 +1,97 @@
+<resources>
+    <string name="app_name">SafeSteps</string>
+
+    <!-- Authentication -->
+    <string name="email_hint">E-pos</string>
+    <string name="password_hint">Wagwoord</string>
+    <string name="sign_in">Teken in</string>
+    <string name="register">Registreer</string>
+    <string name="dont_have_account">Het jy nie \'n rekening nie? Registreer</string>
+    <string name="have_account">Het jy \'n rekening? Teken in</string>
+    <string name="skip_dev">Slaan oor (ontwikkelaars)</string>
+
+    <!-- Main Screen -->
+    <string name="emergency">NOODGEVAL</string>
+    <string name="press_emergency">Druk knoppie in geval van nood</string>
+    <string name="authenticate">Verifieer</string>
+    <string name="welcome">Welkom %1$s</string>
+
+    <!-- Navigation -->
+    <string name="nav_alert">Waarskuwing</string>
+    <string name="nav_friends">Vriende</string>
+    <string name="nav_map">Kaart</string>
+    <string name="nav_settings">Instellings</string>
+    <string name="nav_history">Geskiedenis</string>
+
+    <!-- Contacts -->
+    <string name="trusted_contacts">Vertroude Kontakte</string>
+    <string name="add_trusted_contact">Voeg Vertroude Kontak By</string>
+    <string name="contact_name">Kontak Naam</string>
+    <string name="contact_phone">Telefoonnommer</string>
+    <string name="contact_email">E-pos Adres</string>
+    <string name="add">Voeg by</string>
+    <string name="cancel">Kanselleer</string>
+    <string name="remove">Verwyder</string>
+    <string name="no_contacts">Nog geen kontakte bygevoeg nie</string>
+    <string name="contact_added">Kontak suksesvol bygevoeg</string>
+    <string name="contact_removed">Kontak verwyder</string>
+    <string name="remove_contact_title">Verwyder Kontak</string>
+    <string name="remove_contact_message">Verwyder %1$s van vertroude kontakte?</string>
+
+    <!-- Alerts -->
+    <string name="alert_history">Waarskuwing Geskiedenis</string>
+    <string name="no_alerts">Nog geen waarskuwings nie</string>
+    <string name="alert_sent">Noodwaarskuwing suksesvol gestuur!</string>
+    <string name="alert_active">JY HET \'N WAARSKUWING GEAKTIVEER, ALLE VERTROUDE KONTAKTE SAL IN KENNIS GESTEL WORD</string>
+    <string name="deactivate_alert">Deaktiveer Waarskuwing</string>
+    <string name="emergency_type">--- NOODGEVAL ---</string>
+
+    <!-- Settings -->
+    <string name="settings">Instellings</string>
+    <string name="account">Rekening</string>
+    <string name="edit_profile">Wysig Profiel</string>
+    <string name="language">Taal</string>
+    <string name="enable_biometric">Aktiveer Biometriese Aanmelding</string>
+    <string name="logout">Teken uit</string>
+    <string name="logout_title">Teken uit</string>
+    <string name="logout_message">Is jy seker jy wil uitteken?</string>
+    <string name="select_language">Kies Taal</string>
+
+    <!-- Profile -->
+    <string name="edit_profile_info">Wysig Profiel Inligting</string>
+    <string name="full_name">Volle Naam</string>
+    <string name="phone_number">Telefoonnommer</string>
+    <string name="save">Stoor</string>
+    <string name="profile_updated">Profiel opgedateer</string>
+
+    <!-- Permissions & Errors -->
+    <string name="location_permission_required">Liggingstoestemming word vereis vir noodwaarskuwings</string>
+    <string name="enable_location">Aktiveer asseblief liggingsdienste</string>
+    <string name="error_getting_location">Fout met verkryging van ligging: %1$s</string>
+    <string name="name_required">Naam word vereis</string>
+    <string name="email_or_phone_required">Verskaf asseblief e-pos of telefoonnommer</string>
+    <string name="invalid_email">Ongeldige e-pos formaat</string>
+
+    <!-- Biometric -->
+    <string name="biometric_title">Ontsluit App</string>
+    <string name="biometric_subtitle">Bevestig jou identiteit</string>
+    <string name="biometric_description">Gebruik vingerafdruk om voort te gaan</string>
+    <string name="biometric_negative">Kanselleer</string>
+    <string name="biometric_success">Verifikasie geslaagd</string>
+    <string name="biometric_failed">Verifikasie misluk</string>
+    <string name="biometric_error">Biometriese verifikasie gekanselleer of misluk</string>
+    <string name="biometric_unavailable">Biometrie nie beskikbaar nie. Meld aan sonder verifikasie.</string>
+    <string name="biometric_enabled">Biometrie geaktiveer</string>
+    <string name="biometric_disabled">Biometrie gedeaktiveer</string>
+
+    <!-- Offline -->
+    <string name="offline_mode">Jy is vanlyn</string>
+    <string name="data_saved_locally">Data plaaslik gestoor en sal sinchroniseer wanneer aanlyn</string>
+    <string name="syncing">Sinchroniseer data...</string>
+    <string name="sync_complete">Sinchronisasie voltooi</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">SafeSteps Waarskuwings</string>
+    <string name="notification_channel_desc">Noodwaarskuwings van SafeSteps</string>
+    <string name="map_coming_soon">Kaart kom binnekort</string>
+</resources>
