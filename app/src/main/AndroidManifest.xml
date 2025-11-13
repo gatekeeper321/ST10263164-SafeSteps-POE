@@ -49,6 +49,10 @@
             android:name=".ContactsActivity"
             android:exported="false" />
         <activity
+            android:name=".MapActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SafeSteps" />
+        <activity
             android:name=".AlertActivity"
             android:exported="false" />
         <activity

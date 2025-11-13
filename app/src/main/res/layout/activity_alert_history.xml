@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/safe_blue"
@@ -49,7 +48,7 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="0dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Alert History"
+                android:text="@string/alert_history"
                 android:textColor="@color/background_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -60,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="No alerts yet"
+            android:text="@string/no_alerts"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp"

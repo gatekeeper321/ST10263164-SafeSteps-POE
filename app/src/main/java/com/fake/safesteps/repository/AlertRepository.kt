@@ -1,5 +1,7 @@
 package com.fake.safesteps.repository
 
+import android.content.Context
+import android.location.Geocoder
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,8 +16,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
-class AlertRepository {
+class AlertRepository(private val context: Context) {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val alertsCollection = db.collection("emergencyAlerts")
@@ -78,6 +81,56 @@ class AlertRepository {
     }
 
     /**
+     * Convert coordinates to human-readable address using Geocoder
+     * Uses timeout to prevent blocking the alert sending
+     */
+    private suspend fun getAddressFromCoordinates(
+        latitude: Double,
+        longitude: Double
+    ): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                // Add timeout to prevent hanging
+                val geocoder = Geocoder(context, Locale.getDefault())
+
+                // Quick check if Geocoder is available
+                if (!Geocoder.isPresent()) {
+                    Log.w(TAG, "Geocoder not available on this device")
+                    return@withContext null
+                }
+
+                // Use withTimeoutOrNull to prevent blocking
+                val addresses = kotlinx.coroutines.withTimeoutOrNull(3000L) {
+                    geocoder.getFromLocation(latitude, longitude, 1)
+                }
+
+                if (addresses != null && addresses.isNotEmpty()) {
+                    val address = addresses[0]
+
+                    // Build a readable address string
+                    val addressParts = mutableListOf<String>()
+
+                    // Add street address (most detailed)
+                    address.getAddressLine(0)?.let { addressParts.add(it) }
+
+                    val fullAddress = addressParts.joinToString(", ")
+                    Log.d(TAG, "Geocoded address: $fullAddress")
+                    return@withContext fullAddress
+                } else {
+                    Log.w(TAG, "No address found for coordinates (timeout or no results)")
+                    return@withContext null
+                }
+            } catch (e: java.io.IOException) {
+                Log.w(TAG, "Geocoding network error (proceeding with coordinates)", e)
+                return@withContext null
+            } catch (e: Exception) {
+                Log.e(TAG, "Geocoding failed", e)
+                return@withContext null
+            }
+        }
+    }
+
+    /**
      * Send push notifications to trusted contacts via Cloud Functions
      * This is much more secure than hardcoding server keys!
      */
@@ -102,6 +155,10 @@ class AlertRepository {
                     return@withContext
                 }
 
+                // Geocode the coordinates to get readable address
+                val address = getAddressFromCoordinates(latitude, longitude)
+                Log.d(TAG, "Using address: ${address ?: "coordinates only"}")
+
                 // Prepare data for Cloud Function
                 val fcmTokensList = tokens.values.toList()
 
@@ -111,6 +168,7 @@ class AlertRepository {
                     userName = userName,
                     latitude = latitude,
                     longitude = longitude,
+                    address = address,
                     alertType = alertType
                 )
 
@@ -135,6 +193,7 @@ class AlertRepository {
         userName: String,
         latitude: Double,
         longitude: Double,
+        address: String?,
         alertType: String
     ): Boolean {
         return withContext(Dispatchers.IO) {
@@ -156,6 +215,9 @@ class AlertRepository {
                     put("userName", userName)
                     put("latitude", latitude)
                     put("longitude", longitude)
+                    if (address != null) {
+                        put("address", address)
+                    }
                     put("alertType", alertType)
                 }
 
@@ -284,5 +346,37 @@ class AlertRepository {
 
     companion object {
         private const val TAG = "AlertRepository"
+    }
+
+    suspend fun getActiveAlertsFromContacts(contactUserIds: List<String>): Result<List<EmergencyAlert>> {
+        return try {
+            if (contactUserIds.isEmpty()) {
+                return Result.success(emptyList())
+            }
+
+            // Firestore 'in' query supports max 10 items, so we need to batch
+            val alerts = mutableListOf<EmergencyAlert>()
+
+            contactUserIds.chunked(10).forEach { batch ->
+                val snapshot = alertsCollection
+                    .whereIn("userId", batch)
+                    .whereEqualTo("isActive", true)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .get()
+                    .await()
+
+                val batchAlerts = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(EmergencyAlert::class.java)?.copy(id = doc.id)
+                }
+
+                alerts.addAll(batchAlerts)
+            }
+
+            Log.d(TAG, "Found ${alerts.size} active alerts from contacts")
+            Result.success(alerts)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting contact alerts", e)
+            Result.failure(e)
+        }
     }
 }

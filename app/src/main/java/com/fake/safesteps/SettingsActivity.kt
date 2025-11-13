@@ -11,21 +11,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.fake.safesteps.databinding.ActivitySettingsBinding
 import com.fake.safesteps.notifications.FCMTokenHelper
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {  // ← Changed this line
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var auth: FirebaseAuth
-    override fun attachBaseContext(newBase: Context) {
-        val prefs = newBase.getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
-        val langCode = prefs.getString("language_code", "en") ?: "en"
 
-        val locale = java.util.Locale(langCode)
-        val config = newBase.resources.configuration
-        config.setLocale(locale)
-        config.setLayoutDirection(locale)
-        val context = newBase.createConfigurationContext(config)
-
-        super.attachBaseContext(context)
-    }
+    // ← DELETED the entire attachBaseContext method (lines removed)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.map_item -> {
-                    notifyUser("Map coming soon")
+                    startActivity(Intent(this, MapActivity::class.java))
                     true
                 }
                 R.id.alert_history_item -> {

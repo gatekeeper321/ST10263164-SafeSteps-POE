@@ -11,7 +11,7 @@ import com.fake.safesteps.sync.SyncManager
 import kotlinx.coroutines.launch
 
 class AlertViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = AlertRepository()
+    private val repository = AlertRepository(application.applicationContext)
     private val syncManager = SyncManager(application)
 
     private val _alertCreated = MutableLiveData<Boolean>()

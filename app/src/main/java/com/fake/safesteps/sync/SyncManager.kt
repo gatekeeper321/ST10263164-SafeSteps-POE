@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class SyncManager(private val context: Context) {
     private val database = AlertDatabase.getDatabase(context)
-    private val alertRepository = AlertRepository()
+    private val alertRepository = AlertRepository(context)
     private val contactRepository = ContactRepository()
     private val auth = FirebaseAuth.getInstance()
 

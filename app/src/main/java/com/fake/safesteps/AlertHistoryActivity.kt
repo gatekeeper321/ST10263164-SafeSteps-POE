@@ -13,7 +13,7 @@ import com.fake.safesteps.AlertHistoryAdapter
 import com.fake.safesteps.databinding.ActivityAlertHistoryBinding
 import com.fake.safesteps.viewmodels.AlertViewModel
 
-class AlertHistoryActivity : AppCompatActivity() {
+class AlertHistoryActivity : BaseActivity() {
     private lateinit var binding: ActivityAlertHistoryBinding
     private lateinit var viewModel: AlertViewModel
     private lateinit var adapter: AlertHistoryAdapter

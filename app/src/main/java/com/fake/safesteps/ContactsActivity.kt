@@ -17,7 +17,7 @@ import com.fake.safesteps.databinding.ActivityContactsBinding
 import com.fake.safesteps.models.TrustedContact
 import com.fake.safesteps.viewmodels.ContactViewModel
 
-class ContactsActivity : AppCompatActivity() {
+class ContactsActivity :BaseActivity() {
     private lateinit var binding: ActivityContactsBinding
     private lateinit var viewModel: ContactViewModel
     private lateinit var adapter: ContactsAdapter

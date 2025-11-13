@@ -10,27 +10,26 @@
         android:id="@+id/emailText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email"
+        android:text="@string/contact_email"
         android:textSize="16sp"/>
-
 
     <EditText
         android:id="@+id/nameInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Full Name"/>
+        android:hint="@string/full_name"/>
 
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone Number"
+        android:hint="@string/phone_number"
         android:inputType="phone"/>
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/save"
         android:layout_marginTop="16dp"/>
 </LinearLayout>
