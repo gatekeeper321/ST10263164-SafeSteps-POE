@@ -56,6 +56,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Remove contact"
             android:src="@android:drawable/ic_menu_delete"
-            android:tint="@color/emergency_red" />
+            app:tint="@color/emergency_red" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
