@@ -29,6 +29,7 @@ class AlertRepository(private val context: Context) {
 
     /**
      * Create alert and send push notifications to all trusted contacts via Cloud Functions
+     * NOW INCLUDES: Saving the geocoded address to Firestore
      */
     suspend fun createAlert(
         latitude: Double,
@@ -46,11 +47,16 @@ class AlertRepository(private val context: Context) {
             val contacts = contactsResult.getOrNull() ?: emptyList()
             val contactIds = contacts.map { it.contactUserId }
 
-            // Create the alert in Firestore
+            // IMPORTANT: Geocode the address BEFORE saving to Firestore
+            val address = getAddressFromCoordinates(latitude, longitude)
+            Log.d(TAG, "Geocoded address: ${address ?: "Could not geocode"}")
+
+            // Create the alert in Firestore WITH address
             val alert = hashMapOf(
                 "userId" to userId,
                 "latitude" to latitude,
                 "longitude" to longitude,
+                "address" to address, // NEW: Save the human-readable address
                 "alertType" to alertType,
                 "isActive" to true,
                 "timestamp" to FieldValue.serverTimestamp(),
@@ -58,7 +64,7 @@ class AlertRepository(private val context: Context) {
             )
 
             val documentRef = alertsCollection.add(alert).await()
-            Log.d(TAG, "Alert created: ${documentRef.id}")
+            Log.d(TAG, "Alert created with address: ${documentRef.id}")
 
             // Send notifications to all contacts using Cloud Functions
             if (contacts.isNotEmpty()) {

@@ -1,15 +1,11 @@
 package com.fake.safesteps
 
-
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fake.safesteps.AlertHistoryAdapter
 import com.fake.safesteps.databinding.ActivityAlertHistoryBinding
 import com.fake.safesteps.viewmodels.AlertViewModel
 
@@ -27,19 +23,88 @@ class AlertHistoryActivity : BaseActivity() {
 
         setupRecyclerView()
         setupObservers()
+        setupPullToRefresh()
+        setupBottomNavigation()
 
+        // Load initial data
         viewModel.loadAllAlerts()
 
-        setContentView(binding.root)
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                )
+        // Hide system navigation
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
+        // Set selected nav item
         binding.bottomNavigation.selectedItemId = R.id.alert_history_item
-        setupBottomNavigation()
     }
 
-    //bottom nav (copy paste to every activity)
+    private fun setupRecyclerView() {
+        adapter = AlertHistoryAdapter(emptyList()) { alert ->
+            // Handle alert click - could open map or details
+            Toast.makeText(
+                this,
+                "Alert from ${com.fake.safesteps.utils.DateFormatter.getRelativeTimeString(alert.timestamp)}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        binding.alertHistoryRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@AlertHistoryActivity)
+            adapter = this@AlertHistoryActivity.adapter
+
+            // Add item spacing
+            val spacing = resources.getDimensionPixelSize(R.dimen.alert_item_spacing)
+            addItemDecoration(
+                androidx.recyclerview.widget.DividerItemDecoration(
+                    context,
+                    androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+                ).apply {
+                    // Optional: Add custom divider drawable if needed
+                }
+            )
+        }
+    }
+
+    private fun setupPullToRefresh() {
+        binding.swipeRefreshLayout.setColorSchemeColors(
+            getColor(R.color.safe_button),
+            getColor(R.color.safe_nav),
+            getColor(R.color.emergency_red)
+        )
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshAlerts()
+        }
+    }
+
+    private fun refreshAlerts() {
+        viewModel.loadAllAlerts()
+
+        // Stop refresh animation after a delay (will be stopped in observer too)
+        binding.swipeRefreshLayout.postDelayed({
+            binding.swipeRefreshLayout.isRefreshing = false
+        }, 1500)
+    }
+
+    private fun setupObservers() {
+        viewModel.userAlerts.observe(this) { alerts ->
+            // Stop refreshing
+            binding.swipeRefreshLayout.isRefreshing = false
+
+            if (alerts.isEmpty()) {
+                binding.emptyStateLayout.visibility = View.VISIBLE
+                binding.alertHistoryRecyclerView.visibility = View.GONE
+            } else {
+                binding.emptyStateLayout.visibility = View.GONE
+                binding.alertHistoryRecyclerView.visibility = View.VISIBLE
+                adapter.updateAlerts(alerts)
+            }
+        }
+
+        viewModel.error.observe(this) { error ->
+            binding.swipeRefreshLayout.isRefreshing = false
+            Toast.makeText(this, "Error: $error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -55,42 +120,12 @@ class AlertHistoryActivity : BaseActivity() {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
                 }
-
                 R.id.map_item -> {
-                    notifyUser("Map coming soon")
+                    startActivity(Intent(this, MapActivity::class.java))
                     true
                 }
-
-                R.id.alert_history_item -> {
-                    startActivity(Intent(this, AlertHistoryActivity::class.java))
-                    true
-                }
+                R.id.alert_history_item -> true // Already here
                 else -> false
-            }
-        }
-    }
-
-    private fun setupRecyclerView() {
-        adapter = AlertHistoryAdapter(emptyList())
-        binding.alertHistoryRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@AlertHistoryActivity)
-            adapter = this@AlertHistoryActivity.adapter
-        }
-    }
-
-    private fun notifyUser(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setupObservers() {
-        viewModel.userAlerts.observe(this) { alerts ->
-            if (alerts.isEmpty()) {
-                binding.emptyText.visibility = View.VISIBLE
-                binding.alertHistoryRecyclerView.visibility = View.GONE
-            } else {
-                binding.emptyText.visibility = View.GONE
-                binding.alertHistoryRecyclerView.visibility = View.VISIBLE
-                adapter.updateAlerts(alerts)
             }
         }
     }

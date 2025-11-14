@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/safe_blue">
 
+    <!-- Bottom Navigation -->
     <LinearLayout
+        android:id="@+id/bottomNavContainer"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="vertical"
@@ -27,15 +29,16 @@
             app:menu="@menu/nav_menu" />
     </LinearLayout>
 
+    <!-- Main Content -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Header Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
@@ -49,9 +52,7 @@
                 android:id="@+id/titleText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="0dp"
-                android:gravity="center_horizontal|center_vertical"
+                android:gravity="center"
                 android:text="@string/trusted_contacts"
                 android:textColor="@color/background_primary"
                 android:textSize="24sp"
@@ -59,37 +60,89 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- Contacts RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contactsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-        <TextView
-            android:id="@+id/emptyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="@string/no_contacts"
-            android:textColor="@color/text_secondary"
+        <!-- Enhanced Empty State -->
+        <LinearLayout
+            android:id="@+id/emptyStateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView">
 
+            <!-- Large Icon -->
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:alpha="0.6"
+                android:src="@drawable/people"
+                app:tint="@color/safe_button" />
+
+            <!-- Empty State Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="No Trusted Contacts Yet"
+                android:textColor="@color/text_on_color"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Empty State Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Add trusted contacts to receive\nemergency alerts"
+                android:textAlignment="center"
+                android:textColor="@color/text_on_color"
+                android:textSize="16sp"
+                android:alpha="0.8" />
+
+            <!-- Call to Action Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/emptyStateAddButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:text="Add First Contact"
+                android:textSize="16sp"
+                app:backgroundTint="@color/safe_button"
+                app:cornerRadius="24dp"
+                app:icon="@android:drawable/ic_input_add"
+                app:iconGravity="start" />
+        </LinearLayout>
+
+        <!-- Floating Action Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addContactButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="24dp"
             android:contentDescription="@string/add_trusted_contact"
             android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@color/safe_button"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

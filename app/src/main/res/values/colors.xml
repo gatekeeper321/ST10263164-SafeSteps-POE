@@ -10,6 +10,8 @@
     <color name="safe_green_light">#DCFCE7</color>
     <color name="warning_amber">#D97706</color>
     <color name="warning_amber_light">#FEF3C7</color>
+    <color name="info_blue">#2563EB</color>
+    <color name="info_blue_light">#DBEAFE</color>
 
     <!-- Neutral Colors -->
     <color name="neutral_50">#F9FAFB</color>
@@ -49,14 +51,24 @@
     <color name="border_medium">#D1D5DB</color>
     <color name="border_strong">#9CA3AF</color>
 
-    <!-- Add these to your existing colors.xml -->
+    <!-- Theme Colors -->
     <color name="safe_blue">#384959</color>
     <color name="safe_nav">#104579</color>
     <color name="safe_button">#88BDF2</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- NEW: Gradient Colors for Profile Header -->
+    <color name="gradient_start">#667eea</color>
+    <color name="gradient_end">#764ba2</color>
 
+    <!-- NEW: Timeline Colors -->
+    <color name="timeline_line">#E5E7EB</color>
+    <color name="timeline_dot_emergency">#DC2626</color>
+    <color name="timeline_dot_geofence">#D97706</color>
+    <color name="timeline_dot_resolved">#16A34A</color>
 
-
+    <!-- NEW: Card Shadows -->
+    <color name="shadow_light">#1A000000</color>
+    <color name="shadow_medium">#33000000</color>
 </resources>

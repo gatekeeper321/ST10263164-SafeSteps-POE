@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing Scale (Material Design) -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <!-- Card Radius -->
+    <dimen name="card_radius_sm">8dp</dimen>
+    <dimen name="card_radius_md">12dp</dimen>
+    <dimen name="card_radius_lg">16dp</dimen>
+
+    <!-- Alert History -->
+    <dimen name="alert_item_spacing">0dp</dimen>
+    <dimen name="timeline_dot_size">12dp</dimen>
+    <dimen name="timeline_line_width">2dp</dimen>
+
+    <!-- Profile -->
+    <dimen name="profile_avatar_size">80dp</dimen>
+
+    <!-- Bottom Navigation -->
+    <dimen name="bottom_nav_height">70dp</dimen>
+</resources>
