@@ -141,24 +141,9 @@
             app:backgroundTint="@color/safe_button"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
-<<<<<<< HEAD
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/black" />
-=======
-            app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/emptyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="No contacts added yet"
-            android:textColor="@color/text_secondary"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
->>>>>>> c0f6de42e1eb003a38ce644e1dff85d4bb50a8f1
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

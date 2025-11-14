@@ -87,15 +87,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="Remove contact"
-<<<<<<< HEAD
             app:icon="@android:drawable/ic_menu_delete"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="24dp"
             app:iconTint="@color/emergency_red" />
-=======
-            android:src="@android:drawable/ic_menu_delete"
-            app:tint="@color/emergency_red" />
->>>>>>> c0f6de42e1eb003a38ce644e1dff85d4bb50a8f1
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

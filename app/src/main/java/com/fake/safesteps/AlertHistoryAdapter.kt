@@ -1,5 +1,6 @@
 package com.fake.safesteps
 
+import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fake.safesteps.databinding.AlertHistoryItemBinding
 import com.fake.safesteps.models.EmergencyAlert
 import com.fake.safesteps.utils.DateFormatter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
 /**
- * Enhanced adapter with timeline design and better date formatting
+ * Enhanced adapter with timeline design, geocoding, and better date formatting
  */
 class AlertHistoryAdapter(
     private var alerts: List<EmergencyAlert>,
@@ -24,12 +30,12 @@ class AlertHistoryAdapter(
             // Set relative time
             binding.alertTimeText.text = DateFormatter.getRelativeTimeString(alert.timestamp)
 
-            // Set location coordinates
+            // Set coordinates (always show as fallback)
             binding.alertCoordinatesText.text =
                 "Lat: ${String.format("%.4f", alert.latitude)}, Lng: ${String.format("%.4f", alert.longitude)}"
 
-            // Set location (for now show coordinates, could be geocoded address)
-            binding.alertLocationText.text = "Emergency Location"
+            // Try to geocode the address
+            geocodeLocation(alert.latitude, alert.longitude)
 
             // Configure alert type badge and dot color
             when (alert.alertType) {
@@ -83,6 +89,78 @@ class AlertHistoryAdapter(
             // Click listener
             binding.alertCard.setOnClickListener {
                 onAlertClick?.invoke(alert)
+            }
+        }
+
+        /**
+         * Geocode coordinates to readable address
+         * Reference: Android Geocoder (https://developer.android.com/reference/android/location/Geocoder)
+         */
+        private fun geocodeLocation(latitude: Double, longitude: Double) {
+            // Show loading state
+            binding.alertLocationText.text = "Loading address..."
+
+            // Run geocoding in background
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val geocoder = Geocoder(binding.root.context, Locale.getDefault())
+
+                    // Check if Geocoder is available
+                    if (!Geocoder.isPresent()) {
+                        withContext(Dispatchers.Main) {
+                            binding.alertLocationText.text = "Emergency Location"
+                        }
+                        return@launch
+                    }
+
+                    // Get address from coordinates
+                    val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+
+                    withContext(Dispatchers.Main) {
+                        if (addresses != null && addresses.isNotEmpty()) {
+                            val address = addresses[0]
+
+                            // Build readable address
+                            val addressLine = buildString {
+                                // Street address
+                                if (!address.thoroughfare.isNullOrEmpty()) {
+                                    append(address.thoroughfare)
+                                    if (!address.subThoroughfare.isNullOrEmpty()) {
+                                        append(" ${address.subThoroughfare}")
+                                    }
+                                    append(", ")
+                                }
+
+                                // City
+                                if (!address.locality.isNullOrEmpty()) {
+                                    append(address.locality)
+                                } else if (!address.subAdminArea.isNullOrEmpty()) {
+                                    append(address.subAdminArea)
+                                }
+
+                                // Country (only if not South Africa, to save space)
+                                if (!address.countryCode.isNullOrEmpty() && address.countryCode != "ZA") {
+                                    append(", ${address.countryCode}")
+                                }
+                            }
+
+                            // Set the address or fallback
+                            binding.alertLocationText.text = if (addressLine.isNotEmpty()) {
+                                addressLine
+                            } else {
+                                "Emergency Location"
+                            }
+                        } else {
+                            // No address found
+                            binding.alertLocationText.text = "Emergency Location"
+                        }
+                    }
+                } catch (e: Exception) {
+                    // Geocoding failed
+                    withContext(Dispatchers.Main) {
+                        binding.alertLocationText.text = "Emergency Location"
+                    }
+                }
             }
         }
 
