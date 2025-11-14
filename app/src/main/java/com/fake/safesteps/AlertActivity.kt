@@ -7,19 +7,28 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.fake.safesteps.databinding.ActivityAlertBinding
+import com.fake.safesteps.repository.ContactRepository
 import com.fake.safesteps.viewmodels.AlertViewModel
 import com.google.android.gms.location.*
+import kotlinx.coroutines.launch
 
+/**
+ * Enhanced Alert Activity with animations and better UX
+ * Reference: Material Design Motion (https://material.io/design/motion)
+ */
 class AlertActivity : BaseActivity() {
     private lateinit var binding: ActivityAlertBinding
     private lateinit var viewModel: AlertViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val contactRepository = ContactRepository()
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -49,25 +58,60 @@ class AlertActivity : BaseActivity() {
 
         setupObservers()
         setupClickListeners()
+        loadContactCount()
+        startPulseAnimation()
 
-        setContentView(binding.root)
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                )
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         binding.bottomNavigation.selectedItemId = R.id.alert_item
         setupBottomNavigation()
-
     }
 
-    //bottom nav (copy paste to every activity)
+    /**
+     * Start pulsing animation on emergency button and glow ring
+     */
+    private fun startPulseAnimation() {
+        val pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.pulse_animation)
+        binding.emergencyButton.startAnimation(pulseAnimation)
+        binding.glowRing.startAnimation(pulseAnimation)
+    }
+
+    /**
+     * Stop pulsing animation
+     */
+    private fun stopPulseAnimation() {
+        binding.emergencyButton.clearAnimation()
+        binding.glowRing.clearAnimation()
+    }
+
+    /**
+     * Load contact count and display in card
+     */
+    private fun loadContactCount() {
+        lifecycleScope.launch {
+            try {
+                val result = contactRepository.getTrustedContacts()
+                result.onSuccess { contacts ->
+                    val count = contacts.size
+                    if (count > 0) {
+                        binding.contactCountCard.visibility = View.VISIBLE
+                        binding.contactCountText.text = "$count contact${if (count == 1) "" else "s"} will be notified"
+                    } else {
+                        binding.contactCountCard.visibility = View.GONE
+                    }
+                }.onFailure {
+                    binding.contactCountCard.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                binding.contactCountCard.visibility = View.GONE
+            }
+        }
+    }
+
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.alert_item -> {
-                    startActivity(Intent(this, AlertActivity::class.java))
-                    true
-                }
+                R.id.alert_item -> true // Already here
                 R.id.settings_item -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
@@ -76,12 +120,10 @@ class AlertActivity : BaseActivity() {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
                 }
-
                 R.id.map_item -> {
                     startActivity(Intent(this, MapActivity::class.java))
                     true
                 }
-
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -93,29 +135,66 @@ class AlertActivity : BaseActivity() {
 
     private fun setupObservers() {
         viewModel.loading.observe(this) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.emergencyButton.isEnabled = !isLoading
+            if (isLoading) {
+                // Show loading state
+                stopPulseAnimation()
+                binding.statusCard.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
+                binding.successIcon.visibility = View.GONE
+                binding.statusText.text = "Sending emergency alert..."
+                binding.emergencyButton.isEnabled = false
+                binding.emergencyButton.alpha = 0.5f
+            } else {
+                // Hide loading state
+                binding.progressBar.visibility = View.GONE
+                binding.emergencyButton.isEnabled = true
+                binding.emergencyButton.alpha = 1.0f
+                startPulseAnimation()
+            }
         }
 
         viewModel.alertCreated.observe(this) { created ->
             if (created) {
-                binding.statusText.text = "Emergency alert sent successfully!"
+                // Show success state
+                binding.statusCard.visibility = View.VISIBLE
+                binding.successIcon.visibility = View.VISIBLE
+                binding.statusText.text = "✓ Emergency alert sent successfully!"
+                binding.statusText.setTextColor(getColor(R.color.safe_green))
+
                 Toast.makeText(
                     this,
                     "Emergency alert sent to your trusted contacts",
                     Toast.LENGTH_LONG
                 ).show()
+
+                // Hide success message after 3 seconds
+                binding.statusCard.postDelayed({
+                    binding.statusCard.visibility = View.GONE
+                    binding.statusText.setTextColor(getColor(R.color.text_primary))
+                }, 3000)
             }
         }
 
         viewModel.error.observe(this) { error ->
-            binding.statusText.text = "Error: $error"
+            binding.statusCard.visibility = View.VISIBLE
+            binding.successIcon.visibility = View.GONE
+            binding.statusText.text = "⚠ Error: $error"
+            binding.statusText.setTextColor(getColor(R.color.emergency_red))
             Toast.makeText(this, "Failed to send alert: $error", Toast.LENGTH_LONG).show()
+
+            // Hide error message after 3 seconds
+            binding.statusCard.postDelayed({
+                binding.statusCard.visibility = View.GONE
+                binding.statusText.setTextColor(getColor(R.color.text_primary))
+            }, 3000)
         }
     }
 
     private fun setupClickListeners() {
         binding.emergencyButton.setOnClickListener {
+            // Haptic feedback
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+
             checkLocationPermissionAndSendAlert()
         }
     }
@@ -164,6 +243,7 @@ class AlertActivity : BaseActivity() {
         }
 
         // Show loading
+        binding.statusCard.visibility = View.VISIBLE
         binding.statusText.text = "Getting your location..."
 
         // Always request a fresh location for emergency alerts
@@ -181,7 +261,6 @@ class AlertActivity : BaseActivity() {
                 override fun onLocationResult(result: LocationResult) {
                     val location = result.lastLocation
                     if (location != null) {
-                        // LOG THE RECEIVED COORDINATES
                         android.util.Log.d("AlertActivity",
                             "Fresh location received: lat=${location.latitude}, lng=${location.longitude}")
 
@@ -226,8 +305,12 @@ class AlertActivity : BaseActivity() {
             mainLooper
         )
     }
+
     override fun onResume() {
         super.onResume()
+
+        // Reload contact count
+        loadContactCount()
 
         // Check network status
         viewModel.checkNetworkStatus()
@@ -253,5 +336,10 @@ class AlertActivity : BaseActivity() {
             }
         }
     }
-}
 
+    override fun onPause() {
+        super.onPause()
+        // Stop animations to save battery
+        stopPulseAnimation()
+    }
+}

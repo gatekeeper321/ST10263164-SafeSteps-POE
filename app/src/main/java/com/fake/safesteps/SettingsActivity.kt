@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.fake.safesteps.databinding.ActivitySettingsBinding
 import com.fake.safesteps.notifications.FCMTokenHelper
 
-class SettingsActivity : BaseActivity() {  // ← Changed this line
+class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var auth: FirebaseAuth
-
-    // ← DELETED the entire attachBaseContext method (lines removed)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +38,7 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
                     startActivity(Intent(this, AlertActivity::class.java))
                     true
                 }
-                R.id.settings_item -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
+                R.id.settings_item -> true // Already here
                 R.id.friends_item -> {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
@@ -73,52 +67,52 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val language = sharedPref.getString("selected_language", "English")
         binding.selectedLanguageText.text = language
-    }
 
-    private fun notifyUser(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        // Load biometric preference
+        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+        binding.biometricSwitch.isChecked = isBiometricEnabled
     }
 
     private fun setupClickListeners() {
-        binding.profileContainer.setOnClickListener {
+        // Edit Profile Button
+        binding.editProfileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
+        // Language Container
         binding.languageContainer.setOnClickListener {
             showLanguageDialog()
         }
 
-        // Biometric toggle
-        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
-        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
-        binding.biometricSwitch.isChecked = isBiometricEnabled
-
+        // Biometric Switch
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putBoolean("biometric_enabled", isChecked)
                 apply()
             }
-            Toast.makeText(
-                this,
-                if (isChecked) "Biometric enabled" else "Biometric disabled",
-                Toast.LENGTH_SHORT
-            ).show()
+
+            val message = if (isChecked) {
+                getString(R.string.biometric_enabled)
+            } else {
+                getString(R.string.biometric_disabled)
+            }
+
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // Add FCM Token button listener
-        binding.fcmTokenContainer?.setOnClickListener {
+        // FCM Token Container
+        binding.fcmTokenContainer.setOnClickListener {
             showFCMTokenOptions()
         }
 
+        // Logout Button
         binding.logoutButton.setOnClickListener {
             showLogoutDialog()
         }
     }
 
-    /**
-     * Show FCM Token options dialog
-     */
     private fun showFCMTokenOptions() {
         val options = arrayOf(
             "Get & Copy FCM Token",
@@ -148,7 +142,7 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
         val currentIndex = languages.indexOf(currentLanguage)
 
         AlertDialog.Builder(this)
-            .setTitle("Select Language")
+            .setTitle(getString(R.string.select_language))
             .setSingleChoiceItems(languages, currentIndex) { dialog, which ->
                 val selectedLanguage = languages[which]
 
@@ -160,17 +154,16 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
                 binding.selectedLanguageText.text = selectedLanguage
                 setLocale(selectedLanguage)
                 dialog.dismiss()
-
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     private fun showLogoutDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ ->
+            .setTitle(getString(R.string.logout_title))
+            .setMessage(getString(R.string.logout_message))
+            .setPositiveButton(getString(R.string.logout)) { _, _ ->
                 auth.signOut()
 
                 getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
@@ -185,9 +178,10 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
                 startActivity(intent)
                 finish()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
+
     private fun setLocale(languageName: String) {
         val localeCode = when (languageName) {
             "Afrikaans" -> "af"
@@ -208,5 +202,4 @@ class SettingsActivity : BaseActivity() {  // ← Changed this line
         startActivity(intent)
         finish()
     }
-
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/avatar_circle_bg.xml -->
+<!-- Gradient background for contact avatars -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <gradient
+        android:angle="135"
+        android:endColor="@color/safe_nav"
+        android:startColor="@color/safe_blue"
+        android:type="linear" />
+</shape>

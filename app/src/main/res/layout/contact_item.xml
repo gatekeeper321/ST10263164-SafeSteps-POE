@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardBackgroundColor="@color/safe_button"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="8dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:strokeColor="@color/border_subtle"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +17,34 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
+        <!-- Avatar Circle -->
+        <FrameLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp">
+
+            <!-- Avatar Background Circle -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/avatar_circle_bg" />
+
+            <!-- Avatar Initials -->
+            <TextView
+                android:id="@+id/contactInitials"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="AB"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Contact Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -27,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="Contact Name"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -35,9 +62,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="email@example.com"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:alpha="0.8" />
 
             <TextView
                 android:id="@+id/contactPhoneText"
@@ -46,16 +76,21 @@
                 android:layout_marginTop="2dp"
                 android:text="+27 123 456 789"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:alpha="0.8" />
         </LinearLayout>
 
-        <ImageButton
+        <!-- Delete Button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="Remove contact"
-            android:src="@android:drawable/ic_menu_delete"
-            android:tint="@color/emergency_red" />
+            app:icon="@android:drawable/ic_menu_delete"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/emergency_red" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
