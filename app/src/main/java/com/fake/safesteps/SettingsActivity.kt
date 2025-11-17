@@ -102,10 +102,10 @@ class SettingsActivity : BaseActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // FCM Token Container
-        binding.fcmTokenContainer.setOnClickListener {
-            showFCMTokenOptions()
-        }
+//        // FCM Token Container
+//        binding.fcmTokenContainer.setOnClickListener {
+//            showFCMTokenOptions()
+//        }
 
         // Logout Button
         binding.logoutButton.setOnClickListener {

@@ -78,10 +78,10 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.btnSkip.setOnClickListener {
-            startActivity(Intent(this, AlertActivity::class.java))
-            finish()
-        }
+//        binding.btnSkip.setOnClickListener {
+//            startActivity(Intent(this, AlertActivity::class.java))
+//            finish()
+//        }
     }
 
     /**
