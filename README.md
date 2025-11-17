@@ -43,7 +43,7 @@ SafeSteps is a comprehensive mobile safety application built with Kotlin and Fir
 
 | Alert History | Settings | Multi-language | Biometric |
 |---------------|----------|----------------|-----------|
-| ![History](screenshots/history.png) | ![Settings](screenshots/settings.png) | ![Languages](screenshots/languages.png) | ![Biometric](screenshots/biometric.png) |
+| ![History](screenshots/history.png) | ![Settings](screenshots/settings.png) | ![Languages](screenshots/languages.png) |
 
 ---
 
