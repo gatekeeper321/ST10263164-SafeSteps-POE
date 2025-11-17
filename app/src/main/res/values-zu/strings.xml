@@ -1,0 +1,97 @@
+<resources>
+    <string name="app_name">SafeSteps</string>
+
+    <!-- Authentication -->
+    <string name="email_hint">I-imeyili</string>
+    <string name="password_hint">Iphasiwedi</string>
+    <string name="sign_in">Ngena ngemvume</string>
+    <string name="register">Bhalisa</string>
+    <string name="dont_have_account">Awunayo i-akhawunti? Bhalisa</string>
+    <string name="have_account">Unayo i-Akhawunti? Ngena ngemvume</string>
+    <string name="skip_dev">Yeqa (izinhloso zokuthuthukisa)</string>
+
+    <!-- Main Screen -->
+    <string name="emergency">ISIMO ESIPHUTHUMAYO</string>
+    <string name="press_emergency">Cindezela inkinobho uma kunesimoesiphuthumayo</string>
+    <string name="authenticate">Qinisekisa</string>
+    <string name="welcome">Siyakwamukela %1$s</string>
+
+    <!-- Navigation -->
+    <string name="nav_alert">Isexwayiso</string>
+    <string name="nav_friends">Abangane</string>
+    <string name="nav_map">Imephu</string>
+    <string name="nav_settings">Izilungiselelo</string>
+    <string name="nav_history">Umlando</string>
+
+    <!-- Contacts -->
+    <string name="trusted_contacts">Oxhumana Nabo Abathembekile</string>
+    <string name="add_trusted_contact">Engeza Oxhumana Naye Othembekile</string>
+    <string name="contact_name">Igama Loxhumana Naye</string>
+    <string name="contact_phone">Inombolo Yocingo</string>
+    <string name="contact_email">Ikheli Le-imeyili</string>
+    <string name="add">Engeza</string>
+    <string name="cancel">Khansela</string>
+    <string name="remove">Susa</string>
+    <string name="no_contacts">Akukho oxhumana nabo abangeziweyile okwamanje</string>
+    <string name="contact_added">Oxhumana naye wengezwe ngempumelelo</string>
+    <string name="contact_removed">Oxhumana nayeususwe</string>
+    <string name="remove_contact_title">Susa Oxhumana Naye</string>
+    <string name="remove_contact_message">Susa u-%1$s koxhumana nabo abathembekile?</string>
+
+    <!-- Alerts -->
+    <string name="alert_history">Umlando Wezexwayiso</string>
+    <string name="no_alerts">Azikho izexwayiso okwamanje</string>
+    <string name="alert_sent">Isexwayiso esiphuthumayo sithunyelwe ngempumelelo!</string>
+    <string name="alert_active">UNIKEZE ISEXWAYISO AMANDLA, BONKE OXHUMANA NABO ABATHEMBEKILE BAZOKWAZISWA</string>
+    <string name="deactivate_alert">Khubaza Isexwayiso</string>
+    <string name="emergency_type">--- ISIMO ESIPHUTHUMAYO ---</string>
+
+    <!-- Settings -->
+    <string name="settings">Izilungiselelo</string>
+    <string name="account">I-akhawunti</string>
+    <string name="edit_profile">Hlela Iphrofayela</string>
+    <string name="language">Ulimi</string>
+    <string name="enable_biometric">Nika Amandla Ukungena Ngemvume Nge-Biometric</string>
+    <string name="logout">Phuma</string>
+    <string name="logout_title">Phuma</string>
+    <string name="logout_message">Uqinisekile ukuthi ufuna ukuphuma?</string>
+    <string name="select_language">Khetha Ulimi</string>
+
+    <!-- Profile -->
+    <string name="edit_profile_info">Hlela Ulwazi Lwephrofayela</string>
+    <string name="full_name">Igama Eligcwele</string>
+    <string name="phone_number">Inombolo Yocingo</string>
+    <string name="save">Londoloza</string>
+    <string name="profile_updated">Iphrofayela ibuyekeziwe</string>
+
+    <!-- Permissions & Errors -->
+    <string name="location_permission_required">Imvume yendawo iyadingeka ezexwayisweni eziphuthumayo</string>
+    <string name="enable_location">Sicela unike amandla izinsizakalo zendawo</string>
+    <string name="error_getting_location">Iphutha ekutholeni indawo: %1$s</string>
+    <string name="name_required">Igama liyadingeka</string>
+    <string name="email_or_phone_required">Sicela unikeze i-imeyili noma inombolo yocingo</string>
+    <string name="invalid_email">Ifomethi ye-imeyili engavumelekile</string>
+
+    <!-- Biometric -->
+    <string name="biometric_title">Vula Uhlelo Lokusebenza</string>
+    <string name="biometric_subtitle">Qinisekisa ubunikazi bakho</string>
+    <string name="biometric_description">Sebenzisa izigxivizo zeminwe ukuqhubeka</string>
+    <string name="biometric_negative">Khansela</string>
+    <string name="biometric_success">Ukuqinisekisa kuphumelele</string>
+    <string name="biometric_failed">Ukuqinisekisa kuhlulekile</string>
+    <string name="biometric_error">Ukuqinisekisa nge-biometric kukhanselwe noma kuhlulekile</string>
+    <string name="biometric_unavailable">I-Biometric ayitholakali. Kungena ngemvume ngaphandle kokuqinisekisa.</string>
+    <string name="biometric_enabled">I-Biometric inikewe amandla</string>
+    <string name="biometric_disabled">I-Biometric ikhutshazwe</string>
+
+    <!-- Offline -->
+    <string name="offline_mode">Awuxhumekile</string>
+    <string name="data_saved_locally">Idatha ilondoloziwe maduze futhi izovumelaniswa uma ixhumekile</string>
+    <string name="syncing">Ivumelanisa idatha...</string>
+    <string name="sync_complete">Ukuvumelanisa kuqediwe</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Izexwayiso ze-SafeSteps</string>
+    <string name="notification_channel_desc">Izexwayiso eziphuthumayo ezivela ku-SafeSteps</string>
+    <string name="map_coming_soon">Imephu iyeza maduze</string>
+</resources>

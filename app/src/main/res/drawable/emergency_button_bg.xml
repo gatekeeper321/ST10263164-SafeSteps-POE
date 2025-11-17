@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/emergency_button_bg.xml -->
+<!-- Background with ripple effect for emergency button -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/emergency_red_light">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/emergency_red" />
+            <stroke
+                android:width="6dp"
+                android:color="@color/emergency_red_dark" />
+        </shape>
+    </item>
+</ripple>

@@ -10,6 +10,7 @@ import com.fake.safesteps.databinding.ActivityProfileBinding
 import com.fake.safesteps.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -60,6 +61,11 @@ class ProfileActivity : AppCompatActivity() {
 
             val result = userRepository.createOrUpdateUser(email, name, phone)
             result.onSuccess {
+                auth.currentUser?.updateProfile(
+                    UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+                )
                 Toast.makeText(this@ProfileActivity, "Profile updated", Toast.LENGTH_SHORT).show()
                 finish()
             }.onFailure {

@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.fake.safesteps.databinding.ActivitySettingsBinding
+import com.fake.safesteps.notifications.FCMTokenHelper
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var auth: FirebaseAuth
 
@@ -25,16 +25,12 @@ class SettingsActivity : AppCompatActivity() {
         loadLanguagePreference()
         setupClickListeners()
 
-        setContentView(binding.root)
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                )
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         binding.bottomNavigation.selectedItemId = R.id.settings_item
         setupBottomNavigation()
     }
 
-    //bottom nav (copy paste to every activity)
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -42,20 +38,15 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(Intent(this, AlertActivity::class.java))
                     true
                 }
-                R.id.settings_item -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
+                R.id.settings_item -> true // Already here
                 R.id.friends_item -> {
                     startActivity(Intent(this, ContactsActivity::class.java))
                     true
                 }
-
                 R.id.map_item -> {
-                    notifyUser("Map coming soon")
+                    startActivity(Intent(this, MapActivity::class.java))
                     true
                 }
-
                 R.id.alert_history_item -> {
                     startActivity(Intent(this, AlertHistoryActivity::class.java))
                     true
@@ -76,42 +67,72 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
         val language = sharedPref.getString("selected_language", "English")
         binding.selectedLanguageText.text = language
-    }
 
-    private fun notifyUser(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        // Load biometric preference
+        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
+        binding.biometricSwitch.isChecked = isBiometricEnabled
     }
 
     private fun setupClickListeners() {
-        binding.profileContainer.setOnClickListener {
+        // Edit Profile Button
+        binding.editProfileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
+        // Language Container
         binding.languageContainer.setOnClickListener {
             showLanguageDialog()
         }
 
-        binding.logoutButton.setOnClickListener {
-            showLogoutDialog()
-        }
-
-        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
-        val isBiometricEnabled = sharedPref.getBoolean("biometric_enabled", false)
-
-        binding.biometricSwitch.isChecked = isBiometricEnabled
-
+        // Biometric Switch
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putBoolean("biometric_enabled", isChecked)
                 apply()
             }
-            Toast.makeText(
-                this,
-                if (isChecked) "Biometric enabled" else "Biometric disabled",
-                Toast.LENGTH_SHORT
-            ).show()
+
+            val message = if (isChecked) {
+                getString(R.string.biometric_enabled)
+            } else {
+                getString(R.string.biometric_disabled)
+            }
+
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+
+        // FCM Token Container
+        binding.fcmTokenContainer.setOnClickListener {
+            showFCMTokenOptions()
+        }
+
+        // Logout Button
+        binding.logoutButton.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showFCMTokenOptions() {
+        val options = arrayOf(
+            "Get & Copy FCM Token",
+            "Show Saved Token",
+            "Subscribe to 'test' Topic",
+            "Unsubscribe from 'test' Topic"
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle("FCM Token Options")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> FCMTokenHelper.getAndCopyToken(this)
+                    1 -> FCMTokenHelper.showSavedToken(this)
+                    2 -> FCMTokenHelper.subscribeToTopic("test", this)
+                    3 -> FCMTokenHelper.unsubscribeFromTopic("test", this)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showLanguageDialog() {
@@ -121,7 +142,7 @@ class SettingsActivity : AppCompatActivity() {
         val currentIndex = languages.indexOf(currentLanguage)
 
         AlertDialog.Builder(this)
-            .setTitle("Select Language")
+            .setTitle(getString(R.string.select_language))
             .setSingleChoiceItems(languages, currentIndex) { dialog, which ->
                 val selectedLanguage = languages[which]
 
@@ -131,37 +152,54 @@ class SettingsActivity : AppCompatActivity() {
                 }
 
                 binding.selectedLanguageText.text = selectedLanguage
-                Toast.makeText(
-                    this,
-                    "Language set to $selectedLanguage",
-                    Toast.LENGTH_SHORT
-                ).show()
-
+                setLocale(selectedLanguage)
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     private fun showLogoutDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ ->
+            .setTitle(getString(R.string.logout_title))
+            .setMessage(getString(R.string.logout_message))
+            .setPositiveButton(getString(R.string.logout)) { _, _ ->
                 auth.signOut()
 
-                // Clear preferences
                 getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
                     .edit()
                     .clear()
                     .apply()
 
-                // Navigate to login screen
-                // TODO: Replace with your actual LoginActivity
                 Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
+    }
+
+    private fun setLocale(languageName: String) {
+        val localeCode = when (languageName) {
+            "Afrikaans" -> "af"
+            "isiZulu" -> "zu"
+            else -> "en"
+        }
+
+        val sharedPref = getSharedPreferences("SafeStepsPrefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("language_code", localeCode)
+            putString("selected_language", languageName)
+            apply()
+        }
+
+        // Restart app to apply locale cleanly
+        val intent = Intent(this, SettingsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }

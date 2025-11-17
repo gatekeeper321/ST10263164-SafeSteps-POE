@@ -1,64 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="15dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Timeline Line (Vertical) -->
+    <View
+        android:id="@+id/timelineLine"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:background="@color/timeline_line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Timeline Dot (Color-coded) -->
+    <View
+        android:id="@+id/timelineDot"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/timeline_dot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Content Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/alertCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/alertTypeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="--- EMERGENCY ---"
-            android:textColor="@color/emergency_red"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/background_primary"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/timelineLine"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/border_subtle"
+        app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
+            <!-- Alert Type Badge -->
             <TextView
-                android:id="@+id/alertNameText"
+                android:id="@+id/alertTypeBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/badge_emergency"
+                android:paddingStart="12dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="4dp"
+                android:text="🚨 EMERGENCY"
+                android:textColor="@color/emergency_red_dark"
+                android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
 
+            <!-- Relative Time -->
             <TextView
-                android:id="@+id/alertDateText"
-                android:layout_width="wrap_content"
+                android:id="@+id/alertTimeText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="Date"
+                android:layout_marginTop="8dp"
+                android:text="2 hours ago"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alertTypeBadge"
+                tools:ignore="HardcodedText" />
+
+            <!-- Location (Geocoded if available) -->
+            <TextView
+                android:id="@+id/alertLocationText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawablePadding="8dp"
+                android:text="123 Main Street, Cape Town"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                app:drawableStartCompat="@drawable/ic_location"
+                app:drawableTint="@color/text_secondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alertTimeText"
+                tools:ignore="HardcodedText" />
+
+            <!-- Coordinates (smaller, secondary) -->
+            <TextView
+                android:id="@+id/alertCoordinatesText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Lat: -33.9249, Lng: 18.4241"
+                android:textColor="@color/text_disabled"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alertLocationText"
+                tools:ignore="HardcodedText" />
+
+            <!-- Status Indicator (for resolved alerts) -->
+            <TextView
+                android:id="@+id/alertStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/badge_resolved"
+                android:paddingStart="10dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="3dp"
+                android:text="✓ Resolved"
+                android:textColor="@color/safe_green"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alertCoordinatesText"
+                tools:ignore="HardcodedText"
+                tools:visibility="visible" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/alertLocationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Location"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
