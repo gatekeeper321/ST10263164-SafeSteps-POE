@@ -24,5 +24,5 @@ The following features, designed for enhanced safety and user experience, have b
 ### 🛠️ Updates and Enhancements
 
 * **💻 Technical Foundation:** The app is built with **Kotlin** on the **MVVM Architecture**, utilizing **Firebase Firestore** as the real-time cloud database and **Google Location Services API** for accurate GPS tracking.
-* **🧪 CI/CD Integration:** Automated testing and build workflows are integrated using **GitHub Actions**, which run automated tests and build the APK debug and release files. 🚨 SafeSteps: Official Release Notes 🚀
+* **🧪 CI/CD Integration:** Automated testing and build workflows are integrated using **GitHub Actions**, which run automated tests and build the APK debug and release files. 
 
