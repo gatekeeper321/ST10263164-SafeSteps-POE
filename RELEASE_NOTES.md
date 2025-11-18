@@ -1,4 +1,4 @@
-#### SafeSteps: Official Release Notes 🚀
+### SafeSteps: Official Release Notes 🚀
 
 We are thrilled to announce the official release of **SafeSteps**, a comprehensive safety and emergency tracking application! This version incorporates all core features outlined in our development plan, with a focus on **speed**, **security**, and **reliability** in critical moments.
 
