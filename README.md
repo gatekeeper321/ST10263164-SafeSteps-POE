@@ -170,14 +170,24 @@ app/
 
 ---
 
-## 📦 Building Release APK
+## 📦 Evidence of Publication
+
+Tool Used: Java Development Kit (keytool utility).
+
+Keystore File: safesteps.keystore
+
+Key Alias: safesteps
+
+Duration: Valid for 10,000 days.
+
+Purpose: The keystore was used to secure the app and prove its authenticity before release.
 
 ### Generate Keystore (First Time Only)
 ```bash
 keytool -genkey -v -keystore safesteps.keystore -alias safesteps -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-### Build Signed APK
+### Build Signed APK and AAB
 1. **Via Android Studio**
    - Build → Generate Signed Bundle / APK
    - Select APK
@@ -189,7 +199,9 @@ keytool -genkey -v -keystore safesteps.keystore -alias safesteps -keyalg RSA -ke
    ./gradlew assembleRelease
    ```
    APK location: `app/build/outputs/apk/release/app-release.apk`
+   AAB location: `app/build/outputs/apk/release/app-release.aab` 
 
+   ![APK&AAB](screenshots/EvidenceOfPublication.jpg)
 
 
 ---
