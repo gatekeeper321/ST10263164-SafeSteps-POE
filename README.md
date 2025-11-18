@@ -126,7 +126,7 @@ app/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/SafeSteps.git
+   git clone https: https://github.com/gatekeeper321/ST10263164-SafeSteps-POE.git
    cd SafeSteps
    ```
 
@@ -263,7 +263,7 @@ Users can switch languages in Settings → Language
 
 ## 🎥 Video Demonstration
 
-Watch the full app demonstration: [YouTube Link - ADD YOUR LINK HERE]
+Watch the full app demonstration: https://youtu.be/cnIFNPKxO5s
 
 
 
