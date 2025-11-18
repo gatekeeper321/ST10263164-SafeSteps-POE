@@ -290,9 +290,9 @@ See [AI_USAGE.md](AI_USAGE.md) for detailed AI usage documentation.
 ## 👥 Team Members
 
 - **[ilyaas kamish]** - Lead Developer
-- **[William Mcpetrie]** - [Role]
-- **[Michel ]** - [Role]
-- **[Nomvuselelo ]** - [Role]
+- **[William Mcpetrie]** - Ui Developer 
+- **[Michel ]** - Tester & Backend Developer 
+- **[Nomvuselelo ]** - Document Lead & Backend Developer
 
 ---
 
