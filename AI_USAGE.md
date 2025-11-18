@@ -7,9 +7,9 @@ As stated in the previous submission of our project for part 1 and 2, AI was use
 ![Login](screenshots/image1.jpg)
 ![Login](screenshots/image2.jpg)
 ![Login](screenshots/image3.jpg)
-As you can see from the images, AI was used. For the user Interface and user experience AI did an inspection to identify things like inconsistent header styles, deprecated code for navigation bars, and poor visual feedback on the buttons[cite: 10]. [cite_start]It then organized these fixes which was helpful for ensuring no critical design flaws were missed.
+As you can see from the images, AI was used. For the user Interface and user experience AI did an inspection to identify things like inconsistent header styles, deprecated code for navigation bars, and poor visual feedback on the buttons. It then organized these fixes which was helpful for ensuring no critical design flaws were missed.
 
 ![Login](screenshots/image4.jpg)
 ![Login](screenshots/image5.jpg)
 ![Login](screenshots/image6.jpg)
-Ran through a bug where the alert system was only sending coordinates instead of actual addresses, AI was useful here as well because it pointed out that the application was missing a step called geocoding before sending the alert[cite: 15]. [cite_start]It then provided a detailed proposal of the methods in the code that needed to be updated in order to fix the issue.
+Ran through a bug where the alert system was only sending coordinates instead of actual addresses, AI was useful here as well because it pointed out that the application was missing a step called geocoding before sending the alert. It then provided a detailed proposal of the methods in the code that needed to be updated in order to fix the issue.
