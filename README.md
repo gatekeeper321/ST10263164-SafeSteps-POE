@@ -187,7 +187,7 @@ Purpose: The keystore was used to secure the app and prove its authenticity befo
 keytool -genkey -v -keystore safesteps.keystore -alias safesteps -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-### Build Signed APK
+### Build Signed APK and AAB
 1. **Via Android Studio**
    - Build → Generate Signed Bundle / APK
    - Select APK
